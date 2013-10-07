@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+          http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+           version="2.5">
+
+    <!--API-->
+    <servlet>
+        <servlet-name>GetCategories</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.csv.GetCategories</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetCategories</servlet-name>
+        <url-pattern>/api/csv/categories</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>StartQuiz</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.csv.GetStartQuiz</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>StartQuiz</servlet-name>
+        <url-pattern>/api/csv/startQuiz</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetUpdateLocation</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.csv.GetUpdateLocation</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetUpdateLocation</servlet-name>
+        <url-pattern>/api/csv/updateLocation</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetCurrentQuestion</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.csv.GetCurrentQuestion</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetCurrentQuestion</servlet-name>
+        <url-pattern>/api/csv/currentQuestion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetAnswerQuestion</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.csv.GetAnswerQuestion</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetAnswerQuestion</servlet-name>
+        <url-pattern>/api/csv/answerQuestion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetSkipQuestion</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.csv.GetSkipQuestion</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetSkipQuestion</servlet-name>
+        <url-pattern>/api/csv/skipQuestion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetScore</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.csv.GetScore</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetScore</servlet-name>
+        <url-pattern>/api/csv/score</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetScoreBoard</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.csv.GetScoreBoard</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetScoreBoard</servlet-name>
+        <url-pattern>/api/csv/scoreBoard</url-pattern>
+    </servlet-mapping>
+
+    <!--end of API-->
+
+    <!--Admin-->
+    <servlet>
+        <servlet-name>Sessions</servlet-name>
+        <jsp-file>/admin/Sessions.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Sessions</servlet-name>
+        <url-pattern>/admin/sessions</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Categories</servlet-name>
+        <jsp-file>/admin/Categories.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Categories</servlet-name>
+        <url-pattern>/admin/categories</url-pattern>
+        <url-pattern>/admin/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Category</servlet-name>
+        <jsp-file>/admin/Category.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Category</servlet-name>
+        <url-pattern>/admin/category</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Question</servlet-name>
+        <jsp-file>/admin/Question.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Question</servlet-name>
+        <url-pattern>/admin/question</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddOrEditCategory</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.admin.AddOrEditCategory</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AddOrEditCategory</servlet-name>
+        <url-pattern>/admin/add-category</url-pattern>
+        <url-pattern>/admin/edit-category</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddOrEditQuestion</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.admin.AddOrEditQuestion</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AddOrEditQuestion</servlet-name>
+        <url-pattern>/admin/add-question</url-pattern>
+        <url-pattern>/admin/edit-question</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteEntity</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.admin.DeleteEntity</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DeleteEntity</servlet-name>
+        <url-pattern>/admin/delete-entity</url-pattern>
+    </servlet-mapping>
+    <!--end of Admin-->
+
+    <!--Guide-->
+    <servlet>
+        <servlet-name>GuideIndex</servlet-name>
+        <jsp-file>/guide/index.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GuideIndex</servlet-name>
+        <url-pattern>/guide</url-pattern>
+    </servlet-mapping>
+    <!--end of Guide-->
+
+    <!--Security constraints-->
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <!--End of Security constraints-->
+
+</web-app>
