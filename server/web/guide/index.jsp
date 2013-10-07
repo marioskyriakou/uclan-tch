@@ -31,7 +31,38 @@
 
             <p>This guide provides a quick tutorial on how the Treasure Hunt Challenge API can be used.</p>
 
-            <h3>Quick overview</h3>
+            <h3>Overview of how the Treasure Hunt Challenge Web Service works</h3>
+
+            <p>To begin a quiz, you need to make a request to the server, telling it which category of questions you
+                would like to use for the quiz (i.e. you need to specify the UUID of the requested category).</p>
+            <p>The server will then select the corresponding set of questions from the database, and assign that list
+                of questions to a new quiz session. It will then send you a Session UUID, which your app needs to
+                remember, and quote in all further communications with the server when playing that specific quiz
+                session.</p>
+                <blockquote>If you send a request to the server, but do not use one of the specified API procedure
+                    calls, you are likely to receive an error message from App Engine (the server software). This is
+                    a different sort of error message to the kind you might legitimately get from the web service
+                    itself when something is wrong with the values of the parameters you have sent in an otherwise
+                    correctly structured message.</blockquote>
+            <p>The session ID can also be used to recover a game part-way through should your App terminate
+                unexpectedly (that’s posh for Crash).</p>
+            <p>The server will only give you the questions one at a time, and you must have answered one correctly
+                (or skipped it) before it will give you the next one. The server will not send any of the answers to
+                your app – you have to send an answer to the server and it will “mark” it for you.</p>
+            <p>From the list of questions it has prepared for you, the server will keep track of which question in the
+                list you are up to, and what your score is (according to the session UUID).</p>
+            <p>At any time, after you started a new session, you may ask for the current question. The server will give
+                you the question and the list of possible answers. All the questions are text-based.</p>
+                <blockquote>Some questions offer multiple possible answers (i.e. multiple choice questions) which you
+                    handle simply by submitting the correct answer’s number (e.g. A, B, etc.)</blockquote>
+            <p>You can attempt to answer the current question at any time by sending your answer to the server. You may
+                also use the “skip” call to move directly on to the next question.</p>
+            <p>When you submit a correct answer or skip, the server will move on to the next question, and update your
+                score appropriately (+10 for a correct answer, -5 for skipping a question). You may ask the server for
+                your current score at any time.</p>
+            <p>After the quiz has ended, you may also ask the server for a table of all submitted scores.</p>
+
+            <h3>Quick overview of API calls</h3>
 
             <hr/>
             <p><b>/api/csv/categories</b></p>
@@ -99,6 +130,23 @@
             </p>
 
             <hr/>
+
+            <h3>Quiz App Design</h3>
+
+            <p>Typically, a quiz will follow the process of calling <a href="/guide/categories.html">categories</a>, using the
+                returned data to allow the player to choose a category, and then use the selection as parameter to call
+                <a href="/guide/startQuiz.html">startQuiz</a>. There will then follow a repeating cycle of calling
+                <a href="/guide/currentQuestion.html">currentQuestion</a> followed by
+                <a href="/guide/answerQuestion.html">answerQuestion</a> (possibly more than once per cycle, as
+                the player gets the answers wrong). Your App will also be expected to submit location updates using the
+                <a href="/guide/updateLocation.html">updateLocation</a> API call, and optionally provide the option to
+                <a href="/guide/skipQuestion.html">skipQuestion</a>. Typically, your App will also
+                call <a href="/guide/score.html">score</a> whenever a question is answered or skipped. The cycle is repeated
+                until the number of questions is exhausted. After this, <a href="/guide/scoreBoard.html">scoreboard</a> may be
+                called.</p>
+            <p>To facilitate the above, a simple interface might have a “setup” screen (i.e. Arrangement), a “question and
+                answer” screen and an “end” screen, which will be hidden and revealed as appropriate.</p>
+
         </div>
 
     </body>

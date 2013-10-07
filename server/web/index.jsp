@@ -40,6 +40,12 @@
                 The main goal is to provide students with an overview of key practical aspects of computing.
             </p>
 
+            <p>
+                This project is open-source, and its code is available for cloning from
+                <a href="https://github.com/nearchos/uclan-tch">GitHub</a>.
+                Please contact npaspallis at uclan point ac dot uk for feedback or questions.
+            </p>
+
             <hr/>
 
             <p>
