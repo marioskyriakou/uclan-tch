@@ -91,9 +91,9 @@ public class GetScoreBoard extends HttpServlet
 
                 final StringBuilder reply = new StringBuilder();
                 reply.append(Protocol.getCsvStatus("OK", "")).append(EOL); // OK status
-                for(final Session sessionInBoard : sessions)
+                for(final Session sessionInCategory : sessions)
                 {
-                    reply.append(sessionInBoard.getAppID()).append(",").append(sessionInBoard.getPlayerName()).append(",").append(sessionInBoard.getScore()).append(EOL);
+                    reply.append(sessionInCategory.getAppID()).append(",").append(sessionInCategory.getPlayerName()).append(",").append(sessionInCategory.getScore()).append(",").append(sessionInCategory.getFinishTime()).append(EOL);
                 }
 
                 printWriter.println(reply.toString()); // normal CSV output

@@ -73,7 +73,7 @@
             </p>
 
             <hr/>
-            <p><b>/api/csv/starQuiz?playerName=...&appID=...&categoryUUID=...</b></p>
+            <p><b>/api/csv/startQuiz?playerName=...&appID=...&categoryUUID=...</b></p>
             <p>
                 Initiates a new quiz session for the specified category. The session is automatically created if no session is already available for the given parameters combination.
                 <br/>

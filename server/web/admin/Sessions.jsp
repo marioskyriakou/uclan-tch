@@ -41,12 +41,15 @@ You are not admin!
     {
         final String categoryUUID = request.getParameter("categoryUUID");
 
+        final Category category = CategoryFactory.getCategory(categoryUUID);
         final Vector<Session> sessions = SessionFactory.getSessionsByCategoryUUID(categoryUUID);
 %>
 
 <h1>Sessions</h1>
 
 <p>Number of sessions : <%=sessions.size()%></p>
+
+<p>Category: <b><%=category.getName()%></b></p>
 
 <table border="1">
     <tr>
@@ -55,6 +58,7 @@ You are not admin!
         <th>PLAYER NAME</th>
         <th>CURRENT QUESTION UUID</th>
         <th>SCORE</th>
+        <th>FINISH TIME</th>
     </tr>
     <%
         for(final Session mySession : sessions)
@@ -66,6 +70,21 @@ You are not admin!
         <td><%=mySession.getPlayerName()%></td>
         <td><%=mySession.getCurrentQuestionUUID()%></td>
         <td><%=mySession.getScore()%></td>
+    <%
+        final long finishTime = mySession.getFinishTime();
+        final long milliseconds = finishTime % 1000;
+        final String millisecondsS = milliseconds >= 100 ? Long.toString(milliseconds) : milliseconds >= 10 ? "0" + milliseconds : "00" + milliseconds;
+        long seconds = finishTime / 1000L;
+        final String secondsS = (seconds % 60L) < 10L ? "0" + (seconds % 60L) : Long.toString(seconds % 60L);
+        long minutes = seconds / 60;
+        final String minutesS = (minutes % 60L) < 10L ? "0" + (minutes % 60L) : Long.toString(minutes % 60L);
+        long hours = minutes / 60;
+        final String hoursS = Long.toString(hours % 60L);
+
+        final String finishTimeS = finishTime == 0 ? "unfinished"
+                : hoursS + ":" + minutesS + ":" + secondsS + "." + millisecondsS;
+    %>
+        <td><%=finishTime%> (<%=finishTimeS%>)</td>
     </tr>
     <%
         }

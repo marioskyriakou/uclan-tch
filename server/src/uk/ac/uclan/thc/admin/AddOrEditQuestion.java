@@ -49,7 +49,7 @@ public class AddOrEditQuestion extends HttpServlet
                 final String seqNumberS = request.getParameter(QuestionFactory.PROPERTY_SEQ_NUMBER);
                 int seqNumber = -1;
                 try { seqNumber = Integer.parseInt(seqNumberS); } catch (NumberFormatException nfe) { log.warning(nfe.getMessage()); }
-                final String text = request.getParameter(QuestionFactory.PROPERTY_TEXT);
+                final String text = request.getParameter(QuestionFactory.PROPERTY_TEXT).replaceAll("\"", "'").replaceAll(",", ";");
                 final String correctAnswer = request.getParameter(QuestionFactory.PROPERTY_CORRECT_ANSWER);
                 float latitude = 0f;
                 try { latitude = Float.parseFloat(request.getParameter(QuestionFactory.PROPERTY_LATITUDE)); } catch (NumberFormatException nfe) { log.warning(nfe.getMessage()); }

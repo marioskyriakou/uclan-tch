@@ -86,7 +86,7 @@ public class GetStartQuiz extends HttpServlet
         if(playerName == null || playerName.isEmpty() || appID == null || appID.isEmpty() || categoryUUID == null || categoryUUID.isEmpty())
         {
             // ignore reply builder, and output the error status/message and terminate
-            printWriter.println(Protocol.getCsvStatus("Invalid or missing parameters", "Valid parameter list 'starQuiz?playerName=...&appID=...&categoryUUID=...'"));
+            printWriter.println(Protocol.getCsvStatus("Invalid or missing parameters", "Valid parameter list 'startQuiz?playerName=...&appID=...&categoryUUID=...'"));
         }
         else
         {

@@ -13,13 +13,15 @@ public class Session
     private final String categoryUUID;
     private final String currentQuestionUUID;
     private final long score;
+    private final long finishTime; // in milliseconds
 
     public Session(final String uuid,
                    final String playerName,
                    final String appID,
                    final String categoryUUID,
                    final String currentQuestionUUID,
-                   final long score)
+                   final long score,
+                   final long finishTime)
     {
         this.uuid = uuid;
         this.playerName = playerName;
@@ -27,6 +29,7 @@ public class Session
         this.categoryUUID = categoryUUID;
         this.currentQuestionUUID = currentQuestionUUID;
         this.score = score;
+        this.finishTime = finishTime;
     }
 
     public String getUUID()
@@ -57,5 +60,10 @@ public class Session
     public long getScore()
     {
         return score;
+    }
+
+    public long getFinishTime()
+    {
+        return finishTime;
     }
 }

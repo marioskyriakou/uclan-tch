@@ -1,8 +1,8 @@
 package uk.ac.uclan.thc.data;
 
 import com.google.appengine.api.datastore.*;
-import uk.ac.uclan.thc.model.Question;
-import uk.ac.uclan.thc.model.Session;
+import uk.ac.uclan.thc.model.*;
+import uk.ac.uclan.thc.model.Category;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -24,6 +24,7 @@ public class SessionFactory
     public static final String PROPERTY_CATEGORY_UUID = "category_uuid";
     public static final String PROPERTY_CURRENT_QUESTION_UUID = "current_question_uuid";
     public static final String PROPERTY_SCORE = "score";
+    public static final String PROPERTY_FINISH_TIME = "finish_time";
 
     static public Session getSession(final String keyAsString)
     {
@@ -161,13 +162,15 @@ public class SessionFactory
             {
                 if(i == numOfQuestions-1) // finished the questions sequence in this session
                 {
-                    updateSessionWithNextQuestionUUIDAndScore(sessionUUID, "", newScore);
+                    final Category category = CategoryFactory.getCategory(categoryUUID);
+                    final long finishTime = System.currentTimeMillis() - category.getValidFrom();
+                    updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, "", newScore, finishTime);
                     return false;
                 }
                 else
                 {
                     final String nextQuestionUUID = questions.elementAt(i+1).getUUID();
-                    updateSessionWithNextQuestionUUIDAndScore(sessionUUID, nextQuestionUUID, newScore);
+                    updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, nextQuestionUUID, newScore, 0L);
                     return true;
                 }
             }
@@ -206,13 +209,15 @@ public class SessionFactory
             {
                 if(i == numOfQuestions-1) // finished the questions sequence in this session
                 {
-                    updateSessionWithNextQuestionUUIDAndScore(sessionUUID, "", newScore);
+                    final Category category = CategoryFactory.getCategory(categoryUUID);
+                    final long finishTime = System.currentTimeMillis() - category.getValidFrom();
+                    updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, "", newScore, finishTime);
                     return false;
                 }
                 else
                 {
                     final String nextQuestionUUID = questions.elementAt(i+1).getUUID();
-                    updateSessionWithNextQuestionUUIDAndScore(sessionUUID, nextQuestionUUID, newScore);
+                    updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, nextQuestionUUID, newScore, 0L);
                     return true;
                 }
             }
@@ -223,9 +228,10 @@ public class SessionFactory
         return false;
     }
 
-    static private void updateSessionWithNextQuestionUUIDAndScore(final String sessionUUID,
+    static private void updateSessionWithNextQuestionUUIDScoreAndFinishTime(final String sessionUUID,
                                                                   final String nextQuestionUUID,
-                                                                  final long score)
+                                                                  final long score,
+                                                                  final long finishTime)
     {
         final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
         try
@@ -233,6 +239,7 @@ public class SessionFactory
             final Entity sessionEntity = datastoreService.get(KeyFactory.stringToKey(sessionUUID));
             sessionEntity.setProperty(PROPERTY_CURRENT_QUESTION_UUID, nextQuestionUUID);
             sessionEntity.setProperty(PROPERTY_SCORE, score);
+            sessionEntity.setProperty(PROPERTY_FINISH_TIME, finishTime);
 
             datastoreService.put(sessionEntity);
         }
@@ -258,6 +265,7 @@ public class SessionFactory
         sessionEntity.setProperty(PROPERTY_CATEGORY_UUID, categoryUUID);
         sessionEntity.setProperty(PROPERTY_CURRENT_QUESTION_UUID, currentQuestionUUID);
         sessionEntity.setProperty(PROPERTY_SCORE, 0);
+        sessionEntity.setProperty(PROPERTY_FINISH_TIME, 0);
 
         return datastoreService.put(sessionEntity);
     }
@@ -270,6 +278,7 @@ public class SessionFactory
                 (String) entity.getProperty(PROPERTY_APP_ID),
                 (String) entity.getProperty(PROPERTY_CATEGORY_UUID),
                 (String) entity.getProperty(PROPERTY_CURRENT_QUESTION_UUID),
-                (Long) entity.getProperty(PROPERTY_SCORE));
+                (Long) entity.getProperty(PROPERTY_SCORE),
+                (Long) entity.getProperty(PROPERTY_FINISH_TIME));
     }
 }

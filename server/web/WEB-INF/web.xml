@@ -5,7 +5,7 @@
           http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
            version="2.5">
 
-    <!--API-->
+    <!--CSV API-->
     <servlet>
         <servlet-name>GetCategories</servlet-name>
         <servlet-class>uk.ac.uclan.thc.api.csv.GetCategories</servlet-class>
@@ -86,7 +86,31 @@
         <url-pattern>/api/csv/scoreBoard</url-pattern>
     </servlet-mapping>
 
-    <!--end of API-->
+    <!--end of CSV API-->
+
+    <!--JSON API-->
+
+    <servlet>
+        <servlet-name>JSON_GetScoreBoard</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetScoreBoard</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetScoreBoard</servlet-name>
+        <url-pattern>/api/json/scoreBoard</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JSON_GetScoreBoardWithLocations</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetScoreBoardWithLocations</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetScoreBoardWithLocations</servlet-name>
+        <url-pattern>/api/json/scoreBoardWithLocations</url-pattern>
+    </servlet-mapping>
+
+    <!--end of JSON API-->
 
     <!--Admin-->
     <servlet>
