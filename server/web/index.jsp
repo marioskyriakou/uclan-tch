@@ -1,4 +1,21 @@
 <%--
+  ~ This file is part of UCLan-THC server.
+  ~
+  ~     UCLan-THC server is free software: you can redistribute it and/or
+  ~     modify it under the terms of the GNU General Public License as
+  ~     published by the Free Software Foundation, either version 3 of
+  ~     the License, or (at your option) any later version.
+  ~
+  ~     UCLan-THC server is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  --%>
+
+<%--
   User: Nearchos Paspallis
   Date: 11/09/13
   Time: 09:48
@@ -42,7 +59,8 @@
 
             <p>
                 This project is open-source, and its code is available for cloning from
-                <a href="https://github.com/nearchos/uclan-tch">GitHub</a>.
+                <a href="https://github.com/nearchos/uclan-tch">GitHub</a> under the
+                <a href="http://www.gnu.org/licenses/lgpl.html">LGPL</a> license.
                 Please contact npaspallis at uclan point ac dot uk for feedback or questions.
             </p>
 
