@@ -17,6 +17,7 @@
 
 package uk.ac.uclan.thc.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,7 +26,7 @@ import java.util.Date;
  * Date: 11/09/13
  * Time: 10:06
  */
-public class Category
+public class Category implements Serializable
 {
     private String uuid;
     private String name;

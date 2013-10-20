@@ -18,6 +18,8 @@
 package uk.ac.uclan.thc.data;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import uk.ac.uclan.thc.model.*;
 import uk.ac.uclan.thc.model.Category;
 
@@ -45,24 +47,36 @@ public class SessionFactory
 
     static public Session getSession(final String keyAsString)
     {
-        final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-        try
+        final MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+        if(memcacheService.contains(keyAsString)) // first check the cache
         {
-            final Entity sessionEntity = datastoreService.get(KeyFactory.stringToKey(keyAsString));
-
-            return getFromEntity(sessionEntity);
+            return (Session) memcacheService.get(keyAsString);
         }
-        catch (EntityNotFoundException enfe)
+        else
         {
-            log.severe("Could not find " + KIND + " with key: " + keyAsString);
+            final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+            try
+            {
+                final Entity sessionEntity = datastoreService.get(KeyFactory.stringToKey(keyAsString));
 
-            return null;
-        }
-        catch (IllegalArgumentException iae)
-        {
-            log.warning("Invalid argument " + iae.getMessage());
+                final Session session = getFromEntity(sessionEntity);
 
-            return null;
+                memcacheService.put(keyAsString, session); // update cache
+
+                return session;
+            }
+            catch (EntityNotFoundException enfe)
+            {
+                log.severe("Could not find " + KIND + " with key: " + keyAsString);
+
+                return null;
+            }
+            catch (IllegalArgumentException iae)
+            {
+                log.warning("Invalid argument " + iae.getMessage());
+
+                return null;
+            }
         }
     }
 
@@ -168,34 +182,38 @@ public class SessionFactory
         {
             return false;
         }
-
-        final String categoryUUID = session.getCategoryUUID();
-        final Vector<Question> questions = QuestionFactory.getAllQuestionsForCategoryOrderedBySeqNumber(categoryUUID);
-        final int numOfQuestions = questions.size();
-        for(int i = 0; i < numOfQuestions; i++)
+        else
         {
-            final Question question = questions.elementAt(i);
-            if(question.getUUID().equals(currentQuestionUUID))
+            MemcacheServiceFactory.getMemcacheService().delete(sessionUUID); // invalidate cache entry
+
+            final String categoryUUID = session.getCategoryUUID();
+            final Vector<Question> questions = QuestionFactory.getAllQuestionsForCategoryOrderedBySeqNumber(categoryUUID);
+            final int numOfQuestions = questions.size();
+            for(int i = 0; i < numOfQuestions; i++)
             {
-                if(i == numOfQuestions-1) // finished the questions sequence in this session
+                final Question question = questions.elementAt(i);
+                if(question.getUUID().equals(currentQuestionUUID))
                 {
-                    final Category category = CategoryFactory.getCategory(categoryUUID);
-                    final long finishTime = System.currentTimeMillis() - category.getValidFrom();
-                    updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, "", newScore, finishTime);
-                    return false;
-                }
-                else
-                {
-                    final String nextQuestionUUID = questions.elementAt(i+1).getUUID();
-                    updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, nextQuestionUUID, newScore, 0L);
-                    return true;
+                    if(i == numOfQuestions-1) // finished the questions sequence in this session
+                    {
+                        final Category category = CategoryFactory.getCategory(categoryUUID);
+                        final long finishTime = System.currentTimeMillis() - category.getValidFrom();
+                        updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, "", newScore, finishTime);
+                        return false;
+                    }
+                    else
+                    {
+                        final String nextQuestionUUID = questions.elementAt(i+1).getUUID();
+                        updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, nextQuestionUUID, newScore, 0L);
+                        return true;
+                    }
                 }
             }
-        }
 
-        // normally, this line would never execute
-        log.severe("Error while progressing session with UUID: " + sessionUUID + " to the next question (currentQuestionUUID: " + currentQuestionUUID + ")");
-        return false;
+            // normally, this line would never execute
+            log.severe("Error while progressing session with UUID: " + sessionUUID + " to the next question (currentQuestionUUID: " + currentQuestionUUID + ")");
+            return false;
+        }
     }
 
     /**
@@ -213,36 +231,40 @@ public class SessionFactory
         {
             return false;
         }
-
-        final long newScore = session.getScore() - 5L;
-
-        final String categoryUUID = session.getCategoryUUID();
-        final Vector<Question> questions = QuestionFactory.getAllQuestionsForCategoryOrderedBySeqNumber(categoryUUID);
-        final int numOfQuestions = questions.size();
-        for(int i = 0; i < numOfQuestions; i++)
+        else
         {
-            final Question question = questions.elementAt(i);
-            if(question.getUUID().equals(currentQuestionUUID))
+            MemcacheServiceFactory.getMemcacheService().delete(sessionUUID); // invalidate cache entry
+
+            final long newScore = session.getScore() - 5L;
+
+            final String categoryUUID = session.getCategoryUUID();
+            final Vector<Question> questions = QuestionFactory.getAllQuestionsForCategoryOrderedBySeqNumber(categoryUUID);
+            final int numOfQuestions = questions.size();
+            for(int i = 0; i < numOfQuestions; i++)
             {
-                if(i == numOfQuestions-1) // finished the questions sequence in this session
+                final Question question = questions.elementAt(i);
+                if(question.getUUID().equals(currentQuestionUUID))
                 {
-                    final Category category = CategoryFactory.getCategory(categoryUUID);
-                    final long finishTime = System.currentTimeMillis() - category.getValidFrom();
-                    updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, "", newScore, finishTime);
-                    return false;
-                }
-                else
-                {
-                    final String nextQuestionUUID = questions.elementAt(i+1).getUUID();
-                    updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, nextQuestionUUID, newScore, 0L);
-                    return true;
+                    if(i == numOfQuestions-1) // finished the questions sequence in this session
+                    {
+                        final Category category = CategoryFactory.getCategory(categoryUUID);
+                        final long finishTime = System.currentTimeMillis() - category.getValidFrom();
+                        updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, "", newScore, finishTime);
+                        return false;
+                    }
+                    else
+                    {
+                        final String nextQuestionUUID = questions.elementAt(i+1).getUUID();
+                        updateSessionWithNextQuestionUUIDScoreAndFinishTime(sessionUUID, nextQuestionUUID, newScore, 0L);
+                        return true;
+                    }
                 }
             }
-        }
 
-        // normally, this line would never execute
-        log.severe("Error while skipping question in session with UUID: " + sessionUUID + " to the next question (currentQuestionUUID: " + currentQuestionUUID + ")");
-        return false;
+            // normally, this line would never execute
+            log.severe("Error while skipping question in session with UUID: " + sessionUUID + " to the next question (currentQuestionUUID: " + currentQuestionUUID + ")");
+            return false;
+        }
     }
 
     static private void updateSessionWithNextQuestionUUIDScoreAndFinishTime(final String sessionUUID,

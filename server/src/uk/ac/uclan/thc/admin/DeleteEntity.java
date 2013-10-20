@@ -17,8 +17,10 @@
 
 package uk.ac.uclan.thc.admin;
 
-import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -31,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 /**
  * User: Nearchos Paspallis
@@ -65,10 +66,18 @@ public class DeleteEntity extends HttpServlet
                 final String key = request.getParameter(CategoryFactory.PROPERTY_UUID);
                 final String redirectUrl = request.getParameter(REDIRECT_URL);
 
-                CategoryFactory.deleteCategory(key);
+                deleteEntity(key);
 
                 response.sendRedirect(URLDecoder.decode(redirectUrl, "UTF-8"));
             }
         }
+    }
+
+    static public void deleteEntity(final String uuid)
+    {
+        final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+        datastoreService.delete(KeyFactory.stringToKey(uuid));
+
+        MemcacheServiceFactory.getMemcacheService().delete(uuid); // invalidate cache entry
     }
 }

@@ -18,6 +18,8 @@
 package uk.ac.uclan.thc.data;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import uk.ac.uclan.thc.model.Question;
 
 import java.util.Iterator;
@@ -45,18 +47,30 @@ public class QuestionFactory
 
     static public Question getQuestion(final String keyAsString)
     {
-        final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-        try
+        final MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+        if(memcacheService.contains(keyAsString))
         {
-            final Entity questionEntity = datastoreService.get(KeyFactory.stringToKey(keyAsString));
-
-            return getFromEntity(questionEntity);
+            return (Question) memcacheService.get(keyAsString);
         }
-        catch (EntityNotFoundException enfe)
+        else
         {
-            log.severe("Could not find " + KIND + " with key: " + keyAsString);
+            final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+            try
+            {
+                final Entity questionEntity = datastoreService.get(KeyFactory.stringToKey(keyAsString));
 
-            return null;
+                final Question question = getFromEntity(questionEntity);
+
+                memcacheService.put(keyAsString, question); // add cache entry
+
+                return question;
+            }
+            catch (EntityNotFoundException enfe)
+            {
+                log.severe("Could not find " + KIND + " with key: " + keyAsString);
+
+                return null;
+            }
         }
     }
 
@@ -123,6 +137,8 @@ public class QuestionFactory
             questionEntity.setProperty(PROPERTY_LATITUDE, latitude);
             questionEntity.setProperty(PROPERTY_LONGITUDE, longitude);
             datastoreService.put(questionEntity);
+
+            MemcacheServiceFactory.getMemcacheService().delete(uuid); // invalidate cache entry
         }
         catch (EntityNotFoundException enfe)
         {

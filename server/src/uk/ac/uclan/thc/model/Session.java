@@ -17,12 +17,14 @@
 
 package uk.ac.uclan.thc.model;
 
+import java.io.Serializable;
+
 /**
  * User: Nearchos Paspallis
  * Date: 24/09/13
  * Time: 22:17
  */
-public class Session
+public class Session implements Serializable
 {
     private final String uuid;
     private final String playerName;

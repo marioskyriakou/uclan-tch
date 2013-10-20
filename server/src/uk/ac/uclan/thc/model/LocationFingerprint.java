@@ -17,12 +17,14 @@
 
 package uk.ac.uclan.thc.model;
 
+import java.io.Serializable;
+
 /**
  * User: Nearchos Paspallis
  * Date: 25/09/13
  * Time: 21:46
  */
-public class LocationFingerprint
+public class LocationFingerprint implements Serializable
 {
     private final String uuid;
     private final long timestamp;

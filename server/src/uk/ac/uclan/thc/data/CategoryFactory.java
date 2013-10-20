@@ -18,6 +18,8 @@
 package uk.ac.uclan.thc.data;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import uk.ac.uclan.thc.model.Category;
 
 import java.util.Vector;
@@ -42,18 +44,30 @@ public class CategoryFactory
 
     static public Category getCategory(final String keyAsString)
     {
-        final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-        try
+        final MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+        if(memcacheService.contains(keyAsString))
         {
-            final Entity categoryEntity = datastoreService.get(KeyFactory.stringToKey(keyAsString));
-
-            return getFromEntity(categoryEntity);
+            return (Category) memcacheService.get(keyAsString);
         }
-        catch (EntityNotFoundException enfe)
+        else
         {
-            log.severe("Could not find " + KIND + " with key: " + keyAsString);
+            final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+            try
+            {
+                final Entity categoryEntity = datastoreService.get(KeyFactory.stringToKey(keyAsString));
 
-            return null;
+                final Category category = getFromEntity(categoryEntity);
+
+                memcacheService.put(keyAsString, category); // add cache entry
+
+                return category;
+            }
+            catch (EntityNotFoundException enfe)
+            {
+                log.severe("Could not find " + KIND + " with key: " + keyAsString);
+
+                return null;
+            }
         }
     }
 
@@ -96,17 +110,13 @@ public class CategoryFactory
             categoryEntity.setProperty(PROPERTY_VALID_FROM, from);
             categoryEntity.setProperty(PROPERTY_VALID_UNTIL, until);
             datastoreService.put(categoryEntity);
+
+            MemcacheServiceFactory.getMemcacheService().delete(uuid); // invalidate cache entry
         }
         catch (EntityNotFoundException enfe)
         {
             log.severe("Could not find " + KIND + " with key: " + uuid);
         }
-    }
-
-    static public void deleteCategory(final String uuid)
-    {
-        final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-        datastoreService.delete(KeyFactory.stringToKey(uuid));
     }
 
     static public Category getFromEntity(final Entity entity)

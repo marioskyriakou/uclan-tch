@@ -17,12 +17,14 @@
 
 package uk.ac.uclan.thc.model;
 
+import java.io.Serializable;
+
 /**
  * User: Nearchos Paspallis
  * Date: 11/09/13
  * Time: 13:42
  */
-public class Question
+public class Question implements Serializable
 {
 //    public static final String QUESTION_TYPE_MCQ = "mcq";
 //    public static final String QUESTION_TYPE_TEXT = "text";
