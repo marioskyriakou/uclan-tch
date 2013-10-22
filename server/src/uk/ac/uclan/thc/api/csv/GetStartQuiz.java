@@ -19,10 +19,8 @@ package uk.ac.uclan.thc.api.csv;
 
 import uk.ac.uclan.thc.api.Protocol;
 import uk.ac.uclan.thc.data.CategoryFactory;
-import uk.ac.uclan.thc.data.QuestionFactory;
 import uk.ac.uclan.thc.data.SessionFactory;
 import uk.ac.uclan.thc.model.Category;
-import uk.ac.uclan.thc.model.Question;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Vector;
 
 import static uk.ac.uclan.thc.api.Protocol.EOL;
 
@@ -83,6 +80,14 @@ import static uk.ac.uclan.thc.api.Protocol.EOL;
  *         <br/>Inactive category,The specified category is not active right now
  *         </code>
  *     </li>
+ *     <li>
+ *         When the playerName is already in use
+ *         Status: "Invalid playerName", Message: "The specified playerName is already in use (try a different one)"
+ *         Example:
+ *         <code>
+ *         <br/>Invalid playerName,The specified playerName is already in use (try a different one)
+ *         </code>
+ *     </li>
  * </ul>
  *
  * User: Nearchos Paspallis
@@ -95,6 +100,10 @@ public class GetStartQuiz extends HttpServlet
     {
         response.setContentType("text/plain; charset=utf-8");
         final PrintWriter printWriter = response.getWriter();
+
+        // if magic is specified and equals {@link MAGIC}, then show inactive categories too - used by the examiner
+        final String magic = request.getParameter("magic");
+        final boolean showInactive = GetCategories.MAGIC.equals(magic);
 
         final String playerName = request.getParameter("playerName");
         final String appID      = request.getParameter("appID");
@@ -115,20 +124,29 @@ public class GetStartQuiz extends HttpServlet
             }
             else
             {
-                if(!category.isActiveNow())
+                if(!category.isActiveNow() && !showInactive)
                 {
                     // ignore reply builder, and output the error status/message and terminate
                     printWriter.println(Protocol.getCsvStatus("Inactive category", "The specified category is not active right now"));
                 }
                 else
                 {
-                    final StringBuilder reply = new StringBuilder();
-                    reply.append(Protocol.getCsvStatus("OK", "")).append(EOL); // OK status
-
                     final String sessionUUID = SessionFactory.getOrCreateSession(playerName, appID, categoryUUID);
-                    reply.append(sessionUUID).append(EOL);
 
-                    printWriter.println(reply.toString()); // normal CSV output
+                    if(sessionUUID == null)
+                    {
+                        // report that the given playerName was already used
+                        printWriter.println(Protocol.getCsvStatus("Invalid playerName", "The specified playerName is already in use (try a different one)"));
+                    }
+                    else
+                    {
+                        final StringBuilder reply = new StringBuilder();
+                        reply.append(Protocol.getCsvStatus("OK", "")).append(EOL); // OK status
+
+                        reply.append(sessionUUID).append(EOL);
+
+                        printWriter.println(reply.toString()); // normal CSV output
+                    }
                 }
             }
         }

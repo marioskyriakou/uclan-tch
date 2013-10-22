@@ -66,7 +66,7 @@ import java.util.Vector;
  */
 public class GetCategories extends HttpServlet
 {
-    public static final String MAGIC = "co1111";
+    public static final String MAGIC = "co1111"; // todo make this parameterized
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

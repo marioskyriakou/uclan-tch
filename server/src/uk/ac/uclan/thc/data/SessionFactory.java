@@ -86,55 +86,63 @@ public class SessionFactory
      * @param playerName the name of the player
      * @param appID the ID of the app
      * @param categoryUUID the UUID of the category
-     * @return the UUID of the created (or retrieved) {@link Session}
+     * @return the UUID of the created {@link Session} or null if it could not be created (i.e. because the playerName,
+     * categoryUUID combination was already used).
      */
     static public String getOrCreateSession(final String playerName, final String appID, final String categoryUUID)
     {
         final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 
-        // first check if a session exists for this playerName/appID/categoryUUID
-        final Query.Filter filterPlayerName = new Query.FilterPredicate(
-                PROPERTY_PLAYER_NAME,
-                Query.FilterOperator.EQUAL,
-                playerName);
-        final Query.Filter filterAppID = new Query.FilterPredicate(
-                PROPERTY_APP_ID,
-                Query.FilterOperator.EQUAL,
-                appID);
-        final Query.Filter filterCategoryUUID = new Query.FilterPredicate(
-                PROPERTY_CATEGORY_UUID,
-                Query.FilterOperator.EQUAL,
-                categoryUUID);
-
-        final Query query = new Query(KIND);
-        final Query.Filter compositeFilter =
-                Query.CompositeFilterOperator.and(filterPlayerName, filterAppID, filterCategoryUUID);
-        query.setFilter(compositeFilter);
-
-        final Vector<Session> sessions = new Vector<Session>();
-
-        final PreparedQuery preparedQuery = datastoreService.prepare(query);
-        final Iterable<Entity> iterable = preparedQuery.asIterable();
-        final Iterator<Entity> iterator = iterable.iterator();
-        while(iterator.hasNext())
+        final Transaction transaction = datastoreService.beginTransaction(); // transaction used to check if the playerName is not used already
+        try
         {
-            final Entity entity = iterator.next();
-            sessions.add(getFromEntity(entity));
+            // first check if a session exists for this playerName/categoryUUID
+            final Query.Filter filterPlayerName = new Query.FilterPredicate(
+                    PROPERTY_PLAYER_NAME,
+                    Query.FilterOperator.EQUAL,
+                    playerName);
+            final Query.Filter filterCategoryUUID = new Query.FilterPredicate(
+                    PROPERTY_CATEGORY_UUID,
+                    Query.FilterOperator.EQUAL,
+                    categoryUUID);
+
+            final Query query = new Query(KIND);
+            final Query.Filter compositeFilter =
+                    Query.CompositeFilterOperator.and(filterPlayerName, filterCategoryUUID);
+            query.setFilter(compositeFilter);
+
+            final Vector<Session> sessions = new Vector<Session>();
+
+            final PreparedQuery preparedQuery = datastoreService.prepare(query);
+            final Iterable<Entity> iterable = preparedQuery.asIterable();
+            final Iterator<Entity> iterator = iterable.iterator();
+
+            // there should be exactly 0 or 1 sessions available
+            if(!iterator.hasNext()) // no existing session with given playerName/categoryUUID; create new session
+            {
+                final Vector<Question> questions = QuestionFactory.getAllQuestionsForCategoryOrderedBySeqNumber(categoryUUID);
+
+                // if questions.isEmpty, set text to empty String "" implying finished session
+                final String firstQuestionUUID = questions.isEmpty() ? "" : questions.elementAt(0).getUUID();
+                final Key key = addSession(playerName, appID, categoryUUID, firstQuestionUUID);
+
+                transaction.commit();
+
+                return KeyFactory.keyToString(key);
+            }
+            else // there must be exactly 1 session available
+            {
+                transaction.rollback();
+
+                return null;
+            }
         }
-
-        // there should be exactly 0 or 1 sessions available
-        if(sessions.isEmpty()) // create new session
+        finally
         {
-            final Vector<Question> questions = QuestionFactory.getAllQuestionsForCategoryOrderedBySeqNumber(categoryUUID);
-
-            // if questions.isEmpty, set text to empty String "" implying finished session
-            final String firstQuestionUUID = questions.isEmpty() ? "" : questions.elementAt(0).getUUID();
-            final Key key = addSession(playerName, appID, categoryUUID, firstQuestionUUID);
-            return KeyFactory.keyToString(key);
-        }
-        else // there must be exactly 1 session available
-        {
-            return sessions.get(0).getUUID();
+            if(transaction.isActive())
+            {
+                transaction.rollback();
+            }
         }
     }
 
