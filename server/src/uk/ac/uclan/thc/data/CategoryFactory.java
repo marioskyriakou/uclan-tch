@@ -41,6 +41,7 @@ public class CategoryFactory
     public static final String PROPERTY_CREATED_BY = "category_created_by";
     public static final String PROPERTY_VALID_FROM = "category_from";
     public static final String PROPERTY_VALID_UNTIL = "category_until";
+    public static final String PROPERTY_CODE = "category_code"; // optional property, containing a code
 
     static public Category getCategory(final String keyAsString)
     {
@@ -87,7 +88,26 @@ public class CategoryFactory
         return categories;
     }
 
-    static public Key addCategory(final String name, final String createdBy, final long from, final long until)
+    static public Vector<Category> getCategoriesByCode(final String code)
+    {
+        final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+        final Query query = new Query(KIND).addSort(PROPERTY_NAME);
+        final Query.Filter filterCode = new Query.FilterPredicate(
+                PROPERTY_CODE,
+                Query.FilterOperator.EQUAL,
+                code);
+        query.setFilter(filterCode);
+        final PreparedQuery preparedQuery = datastoreService.prepare(query);
+        final Vector<Category> categories = new Vector<Category>();
+        for(final Entity entity : preparedQuery.asIterable())
+        {
+            categories.add(getFromEntity(entity));
+        }
+
+        return categories;
+    }
+
+    static public Key addCategory(final String name, final String createdBy, final long from, final long until, final String code)
     {
         final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
         final Entity categoryEntity = new Entity(KIND);
@@ -95,11 +115,12 @@ public class CategoryFactory
         categoryEntity.setProperty(PROPERTY_CREATED_BY, createdBy);
         categoryEntity.setProperty(PROPERTY_VALID_FROM, from);
         categoryEntity.setProperty(PROPERTY_VALID_UNTIL, until);
+        categoryEntity.setProperty(PROPERTY_CODE, code);
 
         return datastoreService.put(categoryEntity);
     }
 
-    static public void editCategory(final String uuid, final String name, final String createdBy, final long from, final long until)
+    static public void editCategory(final String uuid, final String name, final String createdBy, final long from, final long until, final String code)
     {
         final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
         try
@@ -109,6 +130,7 @@ public class CategoryFactory
             categoryEntity.setProperty(PROPERTY_CREATED_BY, createdBy);
             categoryEntity.setProperty(PROPERTY_VALID_FROM, from);
             categoryEntity.setProperty(PROPERTY_VALID_UNTIL, until);
+            categoryEntity.setProperty(PROPERTY_CODE, code);
             datastoreService.put(categoryEntity);
 
             MemcacheServiceFactory.getMemcacheService().delete(uuid); // invalidate cache entry
@@ -126,6 +148,7 @@ public class CategoryFactory
                 (String) entity.getProperty(PROPERTY_NAME),
                 (String) entity.getProperty(PROPERTY_CREATED_BY),
                 (Long) entity.getProperty(PROPERTY_VALID_FROM),
-                (Long) entity.getProperty(PROPERTY_VALID_UNTIL));
+                (Long) entity.getProperty(PROPERTY_VALID_UNTIL),
+                (String) entity.getProperty(PROPERTY_CODE));
     }
 }

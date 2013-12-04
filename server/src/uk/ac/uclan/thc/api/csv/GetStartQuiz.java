@@ -101,9 +101,7 @@ public class GetStartQuiz extends HttpServlet
         response.setContentType("text/plain; charset=utf-8");
         final PrintWriter printWriter = response.getWriter();
 
-        // if magic is specified and equals {@link MAGIC}, then show inactive categories too - used by the examiner
-        final String magic = request.getParameter("magic");
-        final boolean showInactive = GetCategories.MAGIC.equals(magic);
+        final String code = request.getParameter("code"); // undocumented parameter; used only for testing a category before it becomes active
 
         final String playerName = request.getParameter("playerName");
         final String appID      = request.getParameter("appID");
@@ -124,6 +122,7 @@ public class GetStartQuiz extends HttpServlet
             }
             else
             {
+                final boolean showInactive = code != null && code.equals(category.getCode());
                 if(!category.isActiveNow() && !showInactive)
                 {
                     // ignore reply builder, and output the error status/message and terminate

@@ -56,7 +56,7 @@ You are not admin!
     }
     else
     {
-        final String categoryUUID = request.getParameter("categoryUUID");
+        final String categoryUUID = request.getParameter(SessionFactory.PROPERTY_CATEGORY_UUID);
 
         final Category category = CategoryFactory.getCategory(categoryUUID);
         final Vector<Session> sessions = SessionFactory.getSessionsByCategoryUUID(categoryUUID);

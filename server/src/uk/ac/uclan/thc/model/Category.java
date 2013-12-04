@@ -33,14 +33,16 @@ public class Category implements Serializable
     private String createdBy;
     private long validFrom;
     private long validUntil;
+    final String code;
 
-    public Category(final String uuid, final String name, final String createdBy, final long validFrom, final long validUntil)
+    public Category(final String uuid, final String name, final String createdBy, final long validFrom, final long validUntil, final String code)
     {
         this.uuid = uuid;
         this.name = name;
         this.createdBy = createdBy;
         this.validFrom = validFrom;
         this.validUntil = validUntil;
+        this.code = code;
     }
 
     public String getUUID()
@@ -63,9 +65,14 @@ public class Category implements Serializable
         return validFrom;
     }
 
-    public long getValidUntil()
+    public long getValidUntil() // todo investigate if this is used or not
     {
         return validUntil;
+    }
+
+    public String getCode()
+    {
+        return code == null ? "" : code;
     }
 
     public boolean isActiveNow()

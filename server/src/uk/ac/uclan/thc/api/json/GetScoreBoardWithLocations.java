@@ -60,8 +60,6 @@ public class GetScoreBoardWithLocations extends HttpServlet
         }
         else
         {
-            final MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
-
             final Vector<Session> sessions = SessionFactory.getSessionsByCategoryUUID(categoryUUID, sorted);
 
             final StringBuilder reply = new StringBuilder("{").append(EOL);

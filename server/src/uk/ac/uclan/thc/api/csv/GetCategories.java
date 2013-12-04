@@ -34,8 +34,10 @@ import java.util.Vector;
 /**
  * Retrieves the list of available categories.
  *
- * URL: '/api/csv/categories'.
- * No parameters expected.
+ * <ul>
+ * <li>URL: '/api/csv/categories'.</li>
+ * <li>code: [optional parameter] used to return a specific, hidden category (the code must be given to you by the category creator)</li>
+ * </ul>
  *
  * Possible outcomes:
  * <ul>
@@ -66,18 +68,17 @@ import java.util.Vector;
  */
 public class GetCategories extends HttpServlet
 {
-    public static final String MAGIC = "co1111"; // todo make this parameterized
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("text/plain; charset=utf-8");
         final PrintWriter printWriter = response.getWriter();
 
-        // if magic is specified and equals {@link MAGIC}, then show inactive categories too - used by the examiner
-        final String magic = request.getParameter("magic");
-        final boolean showInactive = MAGIC.equals(magic);
+        final String code = request.getParameter("code");
+        final boolean usingCode = code == null || code.isEmpty();
 
-        final Vector<Category> categories = CategoryFactory.getAllCategories();
+        final Vector<Category> categories = usingCode ?
+                CategoryFactory.getAllCategories() :
+                CategoryFactory.getCategoriesByCode(code);
         if(categories.isEmpty())
         {
             // ignore reply builder, and output the error status/message and terminate
@@ -90,17 +91,7 @@ public class GetCategories extends HttpServlet
             reply.append(Protocol.getCsvStatus("OK", "")).append(EOL); // OK status
             for(final Category category : categories)
             {
-//                final Vector<Question> questions = QuestionFactory.getAllQuestionsForCategoryOrderedBySeqNumber(category.getUUID());
-//                // returns: uuid,name,createdBy,validFrom,validTo,noOfQuestions
-//                reply.append(category.getUUID()).append(",")
-//                        .append(category.getName()).append(",")
-//                        .append(category.getCreatedBy()).append(",")
-//                        .append(category.getValidFromAsString()).append(",")
-//                        .append(category.getValidUntilAsString()).append(",")
-//                        .append(questions.size()).append(EOL);
-                // returns: uuid,name
-
-                if(showInactive || category.isActiveNow())
+                if(usingCode || category.isActiveNow()) // if using code, then show also inactive, otherwise show only active
                 {
                     reply.append(category.getUUID()).append(",").append(category.getName()).append(EOL);
                 }

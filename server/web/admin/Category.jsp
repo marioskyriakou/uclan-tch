@@ -66,6 +66,7 @@
         <p><b>Created by</b>: <%= user.getEmail() %></p>
         <p><b>Valid from</b>: <%= category.getValidFromAsString() %></p>
         <p><b>Valid until</b>: <%= category.getValidUntilAsString() %></p>
+        <p><b>Code</b>: <%= category.getCode() %></p>
         <p><b>Is active now</b>: <%= category.isActiveNow() %></p>
 
         <hr/>
@@ -90,6 +91,10 @@
                 <tr>
                     <td>VALID UNTIL</td>
                     <td><input type="datetime-local" name="<%= CategoryFactory.PROPERTY_VALID_UNTIL%>" value="<%= category.getValidUntilAsString() %>"/></td>
+                </tr>
+                <tr>
+                    <td>CODE</td>
+                    <td><input type="text" name="<%= CategoryFactory.PROPERTY_CODE%>" value="<%= category.getCode() %>"/></td>
                 </tr>
                 <tr>
                     <td>IS ACTIVE NOW</td>
@@ -118,7 +123,8 @@
                 <th>CORRECT ANSWER</th>
                 <th>LATITUDE</th>
                 <th>LONGITUDE</th>
-                <th>DELETE</th>
+                <th></th>
+                <th></th>
             </tr>
             <%
                 for(final Question question : questions)
@@ -131,6 +137,12 @@
                 <td><%= question.getCorrectAnswer() %></td>
                 <td><%= question.getLatitude() %></td>
                 <td><%= question.getLongitude() %></td>
+                <td>
+                    <form action="/admin/question">
+                        <div><input type="submit" value="Edit" /></div>
+                        <input type="hidden" name="<%= QuestionFactory.PROPERTY_UUID %>" value="<%= question.getUUID() %>"/>
+                    </form>
+                </td>
                 <td>
                     <form action="/admin/delete-entity">
                         <div><input type="submit" value="Delete" /></div>

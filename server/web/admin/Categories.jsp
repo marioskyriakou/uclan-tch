@@ -6,6 +6,7 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="uk.ac.uclan.thc.data.QuestionFactory" %>
 <%@ page import="uk.ac.uclan.thc.model.Question" %>
+<%@ page import="uk.ac.uclan.thc.data.SessionFactory" %>
 <%--
   ~ This file is part of UCLan-THC server.
   ~
@@ -71,8 +72,10 @@ You are not admin!
         <th>CREATED BY</th>
         <th>VALID FROM</th>
         <th>VALID UNTIL</th>
+        <th>CODE</th>
         <th>IS ACTIVE NOW</th>
-        <th>SESSIONS</th>
+        <th></th>
+        <th></th>
         <th></th>
     </tr>
     <%
@@ -89,9 +92,22 @@ You are not admin!
         <td><%= category.getCreatedBy() %></td>
         <td><%= category.getValidFromAsString() %></td>
         <td><%= category.getValidUntilAsString() %></td>
+        <td><%= category.getCode() %></td>
         <td><%= category.isActiveNow() %></td>
         <td>
-            <input type="button" value="Sessions" onclick="window.open('/admin/sessions?categoryUUID=<%=category.getUUID()%>')" />
+            <%--<form action="/admin/sessions">--%>
+                <div>
+                    <%--<input type="button" value="Sessions"/>--%>
+                    <input type="button" value="Sessions" onclick="window.open('/admin/sessions?<%=SessionFactory.PROPERTY_CATEGORY_UUID%>=<%=category.getUUID()%>')" />
+                </div>
+                <%--<input type="hidden" name="<%= SessionFactory.PROPERTY_CATEGORY_UUID%>" value="<%= category.getUUID() %>"/>--%>
+            <%--</form>--%>
+        </td>
+        <td>
+            <form action="/admin/category">
+                <div><input type="submit" value="Edit" /></div>
+                <input type="hidden" name="<%= CategoryFactory.PROPERTY_UUID %>" value="<%= category.getUUID() %>"/>
+            </form>
         </td>
         <td>
             <form action="/admin/delete-entity">
@@ -129,6 +145,10 @@ You are not admin!
         <tr>
             <td>VALID UNTIL</td>
             <td><input type="datetime-local" name="<%= CategoryFactory.PROPERTY_VALID_UNTIL%>" value="<%= Category.SIMPLE_DATE_FORMAT.format(new Date(now+SEVEN_DAYS)) %>"/></td>
+        </tr>
+        <tr>
+            <td>CODE</td>
+            <td><input type="text" name="<%= CategoryFactory.PROPERTY_CODE%>"/></td>
         </tr>
         <tr><td colspan="2"><i>Please note that all times are in <a href="http://en.wikipedia.org/wiki/UTC">UTC (Coordinated Universal Time)</a></i></td></tr>
     </table>

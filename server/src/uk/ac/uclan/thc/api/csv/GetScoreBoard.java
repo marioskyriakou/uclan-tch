@@ -85,6 +85,20 @@ public class GetScoreBoard extends HttpServlet
         final PrintWriter printWriter = response.getWriter();
 
         final String sessionUUID = request.getParameter("session");
+        final String numOfSessions = request.getParameter("num_of_sessions");
+        int maxNumOfSessions = SessionFactory.MAX_NUM_OF_SESSIONS;
+        if(numOfSessions != null && !numOfSessions.isEmpty())
+        {
+            try
+            {
+                maxNumOfSessions = Integer.parseInt(numOfSessions);
+            }
+            catch (NumberFormatException nfe)
+            {
+                // ignore error
+            }
+        }
+
         final boolean sorted = request.getParameter("sorted") != null; // just defining the parameter is sufficient
 
         if(sessionUUID == null)
@@ -104,7 +118,7 @@ public class GetScoreBoard extends HttpServlet
             else
             {
                 final String categoryUUID = session.getCategoryUUID();
-                final Vector<Session> sessions = SessionFactory.getSessionsByCategoryUUID(categoryUUID, sorted);
+                final Vector<Session> sessions = SessionFactory.getSessionsByCategoryUUID(categoryUUID, maxNumOfSessions, sorted);
 
                 final StringBuilder reply = new StringBuilder();
                 reply.append(Protocol.getCsvStatus("OK", "")).append(EOL); // OK status

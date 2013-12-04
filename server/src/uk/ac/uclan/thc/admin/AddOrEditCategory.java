@@ -79,14 +79,15 @@ public class AddOrEditCategory extends HttpServlet
                     validUntil = 0L;
                     log.warning(pe.getMessage());
                 }
+                final String code = request.getParameter(CategoryFactory.PROPERTY_CODE);
 
                 if(uuid != null && !uuid.isEmpty()) // editing existing category
                 {
-                    CategoryFactory.editCategory(uuid, name, createdBy, validFrom, validUntil);
+                    CategoryFactory.editCategory(uuid, name, createdBy, validFrom, validUntil, code == null ? "" : code);
                 }
                 else // adding a new category
                 {
-                    final Key key = CategoryFactory.addCategory(name, createdBy, validFrom, validUntil);
+                    final Key key = CategoryFactory.addCategory(name, createdBy, validFrom, validUntil, code == null ? "" : code);
                     uuid = KeyFactory.keyToString(key);
                 }
 

@@ -146,12 +146,24 @@ public class SessionFactory
         }
     }
 
+    public static final int MAX_NUM_OF_SESSIONS = 10;
+
     static public Vector<Session> getSessionsByCategoryUUID(final String categoryUUID)
     {
-        return getSessionsByCategoryUUID(categoryUUID, false);
+        return getSessionsByCategoryUUID(categoryUUID, MAX_NUM_OF_SESSIONS, false);
+    }
+
+    static public Vector<Session> getSessionsByCategoryUUID(final String categoryUUID, final int numOfSessions)
+    {
+        return getSessionsByCategoryUUID(categoryUUID, numOfSessions, false);
     }
 
     static public Vector<Session> getSessionsByCategoryUUID(final String categoryUUID, final boolean sorted)
+    {
+        return getSessionsByCategoryUUID(categoryUUID, MAX_NUM_OF_SESSIONS, sorted);
+    }
+
+    static public Vector<Session> getSessionsByCategoryUUID(final String categoryUUID, final int numOfSessions, final boolean sorted)
     {
         final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
         final Query.Filter filterCategory = new Query.FilterPredicate(
@@ -166,9 +178,11 @@ public class SessionFactory
         }
         final PreparedQuery preparedQuery = datastoreService.prepare(query);
         final Vector<Session> sessions = new Vector<Session>();
+        int count = 0;
         for(final Entity entity : preparedQuery.asIterable())
         {
             sessions.add(getFromEntity(entity));
+            if(++count >= numOfSessions) break;
         }
 
         return sessions;
