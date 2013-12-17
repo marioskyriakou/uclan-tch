@@ -108,6 +108,46 @@
     <!--JSON API-->
 
     <servlet>
+        <servlet-name>JSON_GetAnswerQuestion</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetAnswerQuestion</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetAnswerQuestion</servlet-name>
+        <url-pattern>/api/json/answerQuestion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JSON_GetCategories</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetCategories</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetCategories</servlet-name>
+        <url-pattern>/api/json/categories</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JSON_GetCurrentQuestion</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetCurrentQuestion</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetCurrentQuestion</servlet-name>
+        <url-pattern>/api/json/currentQuestion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JSON_GetScore</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetScore</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetScore</servlet-name>
+        <url-pattern>/api/json/score</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>JSON_GetScoreBoard</servlet-name>
         <servlet-class>uk.ac.uclan.thc.api.json.GetScoreBoard</servlet-class>
     </servlet>
@@ -125,6 +165,36 @@
     <servlet-mapping>
         <servlet-name>JSON_GetScoreBoardWithLocations</servlet-name>
         <url-pattern>/api/json/scoreBoardWithLocations</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JSON_GetSkipQuestion</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetSkipQuestion</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetSkipQuestion</servlet-name>
+        <url-pattern>/api/json/skipQuestion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JSON_GetStartQuiz</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetStartQuiz</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetStartQuiz</servlet-name>
+        <url-pattern>/api/json/startQuiz</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JSON_GetUpdateLocation</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.json.GetUpdateLocation</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JSON_GetUpdateLocation</servlet-name>
+        <url-pattern>/api/json/updateLocation</url-pattern>
     </servlet-mapping>
 
     <!--end of JSON API-->

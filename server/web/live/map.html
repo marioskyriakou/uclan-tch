@@ -52,6 +52,21 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdipAJNm39K_JUFg7Tk2nuTNi0QuYK9OI&sensor=false">
     </script>
     <script type="text/javascript">
+
+        function getParam(sname)
+        {
+            var params = location.search.substr(location.search.indexOf("?")+1);
+            var sval = "";
+            params = params.split("&");
+            // split param and value into individual pieces
+            for (var i=0; i<params.length; i++)
+            {
+                temp = params[i].split("=");
+                if ( [temp[0]] == sname ) { sval = temp[1]; }
+            }
+            return decodeURI(sval);
+        }
+
         var UCLan_Cyprus_position = new google.maps.LatLng(35.008154, 33.6975);
 
         var map = {};
@@ -74,7 +89,9 @@
         }
         google.maps.event.addDomListener(window, 'load', initialize);
 
-        var url = "http://uclan-thc.appspot.com/api/json/scoreBoardWithLocations?sorted&categoryUUID=agtzfnVjbGFuLXRoY3IVCxIIQ2F0ZWdvcnkYgICAgIDcsgsM";
+        //var uuid = "agtzfnVjbGFuLXRoY3IVCxIIQ2F0ZWdvcnkYgICAgIDcsgsM";
+        var uuid = getParam("uuid");
+        var url = "http://uclan-thc.appspot.com/api/json/scoreBoardWithLocations?sorted&categoryUUID=" + uuid;
         var month_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 
         var markers = {};
@@ -153,6 +170,7 @@
                     map.setCenter(UCLan_Cyprus_position);
                 }
             };
+
             client.send(null);
             setTimeout(update, 15000); // repeat update after 15 seconds
         }
@@ -165,14 +183,18 @@
     <div id="map-canvas"></div>
     <div id="score-board">
         <img src="uclan_small.png" title="UCLan Cyprus" alt="UCLan Cyprus"/>
-        <h1 style="font-family: sans-serif; color: #CE0E41; font-weight: bold">Treasure Hunt Challenge</h1>
-        <h1 style="font-family: sans-serif; font-weight: bolder">Live score board</h1>
+        <h1 style="font-family: sans-serif; color: #CE0E41; font-weight: bold; font-size: 28px;" id="category_title">Treasure Hunt Challenge</h1>
+        <h1 style="font-family: sans-serif; font-weight: bolder; font-size: 20px;">Live score board</h1>
         <div id="teams" style="padding: 10px;">
             <table align="center" style='border: 1px solid gray; font-size: 20px; padding: 10px'>
                 <tr style='font-weight: bolder'><th style='width: 80px;'>Player</th><th style='width: 80px;'>App ID</th><th style='width: 80px;'>Score</th><th style='width: 80px;'>Finished</th></tr>
             </table>
         </div>
     </div>
+
+    <script type="text/javascript">
+        document.getElementById("category_title").innerHTML=getParam("category_title");
+    </script>
 
 </body>
 </html>

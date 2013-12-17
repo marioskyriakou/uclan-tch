@@ -45,6 +45,8 @@ import static uk.ac.uclan.thc.api.Protocol.EOL;
  */
 public class GetScoreBoardWithLocations extends HttpServlet
 {
+    public static final int MAX_NUM_OF_SESSIONS = 10;
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("text/plain; charset=utf-8");
@@ -60,7 +62,7 @@ public class GetScoreBoardWithLocations extends HttpServlet
         }
         else
         {
-            final Vector<Session> sessions = SessionFactory.getSessionsByCategoryUUID(categoryUUID, sorted);
+            final Vector<Session> sessions = SessionFactory.getSessionsByCategoryUUID(categoryUUID, MAX_NUM_OF_SESSIONS, sorted);
 
             final StringBuilder reply = new StringBuilder("{").append(EOL);
             reply.append("  \"status\": \"OK\"").append(",").append(EOL); // OK status
