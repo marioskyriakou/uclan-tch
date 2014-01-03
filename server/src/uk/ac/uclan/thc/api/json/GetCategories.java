@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Vector;
 
 import static uk.ac.uclan.thc.api.Protocol.EOL;
@@ -83,7 +82,7 @@ public class GetCategories extends HttpServlet
             {
                 if(usingCode || category.isActiveNow()) // if using code, then show also inactive, otherwise show only active
                 {
-                    selectedCategories.add("{ \"uuid\": \"" + category.getUUID() + "\", \"name\": \"" + category.getName() + "\" }");
+                    selectedCategories.add("{ \"uuid\": \"" + category.getUUID() + "\", \"name\": \"" + category.getName() + "\", \"validUntil\": \"" + category.getValidUntilAsString() + "\" }");
                 }
             }
 

@@ -18,7 +18,6 @@
 package uk.ac.uclan.thc.api.csv;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import uk.ac.uclan.thc.api.Protocol;
 import uk.ac.uclan.thc.data.LocationFingerprintFactory;
 import uk.ac.uclan.thc.data.SessionFactory;

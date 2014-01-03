@@ -17,8 +17,6 @@
 
 package uk.ac.uclan.thc.api.json;
 
-import com.google.appengine.api.memcache.MemcacheService;
-import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import uk.ac.uclan.thc.api.Protocol;
 import uk.ac.uclan.thc.data.LocationFingerprintFactory;
 import uk.ac.uclan.thc.data.SessionFactory;

@@ -39,12 +39,23 @@ import uk.ac.uclan.thc.data.CategoryFactory;
 import uk.ac.uclan.thc.data.SessionFactory;
 import uk.ac.uclan.thc.model.Category;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 import static uk.ac.uclan.thc.api.Protocol.EOL;
 
@@ -58,6 +69,8 @@ import static uk.ac.uclan.thc.api.Protocol.EOL;
  */
 public class GetStartQuiz extends HttpServlet
 {
+    private static final Logger log = Logger.getLogger(GetStartQuiz.class.getCanonicalName());
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("text/plain; charset=utf-8");
@@ -68,6 +81,10 @@ public class GetStartQuiz extends HttpServlet
         final String playerName = request.getParameter("playerName");
         final String appID      = request.getParameter("appID");
         final String categoryUUID = request.getParameter("categoryUUID");
+        final String name1 = request.getParameter("name1");
+        final String email1 = request.getParameter("email1");
+        final String name2 = request.getParameter("name2");
+        final String email2 = request.getParameter("email2");
 
         if(playerName == null || playerName.isEmpty() || appID == null || appID.isEmpty() || categoryUUID == null || categoryUUID.isEmpty())
         {
@@ -101,15 +118,62 @@ public class GetStartQuiz extends HttpServlet
                     }
                     else
                     {
+                        // everything ok
+
+                        // first send an email
+                        if(name1 != null && !name1.isEmpty()) sendEmail(category.getCreatedBy(), category.getName(),
+                                                                        playerName, appID, categoryUUID, name1,
+                                                                        email1, name2, email2, request.getRemoteAddr());
+
+                        // next prepare and send the reply
                         final StringBuilder reply = new StringBuilder("{").append(EOL);
                         reply.append("  \"status\": \"OK\"").append(",").append(EOL); // OK status
-                        reply.append("  \"sessionUUID\": \"" + sessionUUID + "\"").append(EOL); // OK status
+                        reply.append("  \"sessionUUID\": \"").append(sessionUUID).append("\"").append(EOL); // OK status
                         reply.append("}").append(EOL);
 
                         printWriter.println(reply.toString()); // normal JSON output
                     }
                 }
             }
+        }
+    }
+
+    private void sendEmail(final String categoryCreatedByEmail, final String categoryName,
+                           final String teamName, final String appID, final String categoryUUID, final String name1,
+                           final String email1, final String name2, final String email2, final String senderIP)
+    {
+        final Session session = Session.getDefaultInstance(new Properties(), null);
+        try
+        {
+            final Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(email1, name1, "utf-8"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(categoryCreatedByEmail, categoryName));
+            message.setSubject("Treasure Hunt - " + appID + " from: " + email1);
+            message.setText(
+                    "Competition entry: "
+                            + "\nApp id: " + appID
+                            + "\nTeam name: " + teamName
+                            + "\nName1: " + name1
+                            + "\nEmail1: " + email1
+                            + "\nName2: " + name2
+                            + "\nEmail2: " + email2
+                            + "\nCategory UUID: " + categoryUUID
+                            + "\nSubmitted (UTC): " + new Date()
+                            + "\nSender IP: " + senderIP
+            );
+            Transport.send(message);
+        }
+        catch (AddressException ae)
+        {
+            log.severe(ae.getMessage());
+        }
+        catch (MessagingException me)
+        {
+            log.severe(me.getMessage());
+        }
+        catch (UnsupportedEncodingException uee)
+        {
+            log.severe(uee.getMessage());
         }
     }
 }
