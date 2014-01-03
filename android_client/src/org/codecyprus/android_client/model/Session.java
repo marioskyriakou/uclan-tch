@@ -15,7 +15,7 @@
  *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.ac.uclan.thc.model;
+package org.codecyprus.android_client.model;
 
 import java.io.Serializable;
 

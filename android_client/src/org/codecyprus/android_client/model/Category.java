@@ -15,30 +15,26 @@
  *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.ac.uclan.thc.model;
+package org.codecyprus.android_client.model;
 
 import java.io.Serializable;
 
 /**
  * User: Nearchos Paspallis
- * Date: 25/09/13
- * Time: 21:46
+ * Date: 11/09/13
+ * Time: 10:06
  */
-public class LocationFingerprint implements Serializable
+public class Category implements Serializable
 {
-    private final String uuid;
-    private final long timestamp;
-    private final double lat;
-    private final double lng;
-    private final String sessionUUID;
+    private String uuid;
+    private String name;
+    private String validUntil;
 
-    public LocationFingerprint(final String uuid, final long timestamp, final double lat, final double lng, final String sessionUUID)
+    public Category(final String uuid, final String name, final String validUntil)
     {
         this.uuid = uuid;
-        this.timestamp = timestamp;
-        this.lat = lat;
-        this.lng = lng;
-        this.sessionUUID = sessionUUID;
+        this.name = name;
+        this.validUntil = validUntil;
     }
 
     public String getUUID()
@@ -46,23 +42,19 @@ public class LocationFingerprint implements Serializable
         return uuid;
     }
 
-    public long getTimestamp()
+    public String getName()
     {
-        return timestamp;
+        return name;
     }
 
-    public double getLat()
+    public String getValidUntil()
     {
-        return lat;
+        return validUntil;
     }
 
-    public double getLng()
+    @Override
+    public String toString()
     {
-        return lng;
-    }
-
-    public String getSessionUUID()
-    {
-        return sessionUUID;
+        return getName();
     }
 }

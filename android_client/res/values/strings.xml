@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">code(cyprus)</string>
+    <string name="version_name">0.1a</string>
+    <string name="build_date">(2013–12–29)</string>
+
+    <!--about dialog-->
+    <string name="about_aspectsense">Developed by\nAspectSense.com © 2011–2014</string>
+    <string name="Rate_us">Rate us</string>
+    <string name="Dismiss">Dismiss</string>
+    <string name="AspectSense_icon">AspectSense icon</string>
+
+    <!--resume or clear dialog-->
+    <string name="Resume_or_clear_message">A stored session exists for treasure hunt: \'%1$s\'.\n\nWould you like to resume it, or start a new one?</string>
+    <string name="Resume">Resume</string>
+    <string name="Start_new">Start new</string>
+    <string name="Cancel">Cancel</string>
+
+    <!--skip dialog-->
+    <string name="Skip_question">Skip question?</string>
+    <string name="Are_you_sure_you_want_to_skip_the_current_question">Are you sure you want to skip the current question?</string>
+
+    <string name="codecyprus_dot_org_url">http://codecyprus.org</string>
+    <string name="aspectsense_dot_com_url">http://aspectsense.com</string>
+
+    <string name="Ahoy">Ahoy pirates! And welcome to the code(cyprus).org Treasure Hunt!\n\nIf you have questions, select the \'Help\' menu. When you are ready, click the button below to get started!</string>    <string name="Start">Start</string>
+    <string name="Lets_get_started">Let\'s get started!</string>
+    <string name="Android_pirate">Android pirate</string>
+    <string name="Select_a_category">Select a category</string>
+    <string name="Enter_code_to_view_hidden_contests">Enter code to view hidden contests</string>
+    <string name="Submit">Submit</string>
+
+    <string name="ACTIVE">ACTIVE</string>
+
+    <string name="Refresh">Refresh</string>
+    <string name="Enter_code">Enter code</string>
+    <string name="First_select_a_treasure_hunt_to_join">First select a treasure to hunt!</string>
+    <string name="Valid_until">Valid until: %1$s</string>
+
+    <string name="Find_the_Treasure">Find the Treasure!</string>
+    <string name="Team_names_and_emails">Ahoy, we are looking for the \'%1$s\' treasure. Now tell us you team\'s names and emails and we are ready to go!</string>
+    <string name="Add_second_pirate">Add second pirate</string>
+    <string name="Remove_second_pirate">Remove second pirate</string>
+    <string name="Team_name">Team name</string>
+    <string name="First_pirate">First pirate</string>
+    <string name="Second_pirate">Second pirate</string>
+    <string name="Name">Name</string>
+    <string name="Email">Email</string>
+    <string name="Empty_name">Empty name</string>
+    <string name="Empty_email">Empty email</string>
+    <string name="Invalid_email">Invalid email</string>
+
+    <string name="Answer_here">Answer here …</string>
+    <string name="Score_is">Score is: %1$d </string>
+    <string name="Skip">Skip</string>
+    <string name="Skipped_has_more_questions">Skipped, has more questions…</string>
+    <string name="Skipped_finished">Skipped, finished!</string>
+    <string name="Loading">Loading …</string>
+    <string name="Requires_location">Requires location!</string>
+    <string name="A">A</string>
+    <string name="B">B</string>
+    <string name="C">C</string>
+    <string name="D">D</string>
+    <string name="Invalid_session">Invalid session!</string>
+    <string name="Invalid_empty_answer">Invalid empty answer</string>
+    <string name="Incorrect">Incorrect</string>
+    <string name="Unknown_or_incorrect_location">Unknown or incorrect location</string>
+    <string name="Correct">Correct!</string>
+    <string name="Correct_finished">Correct, finished!</string>
+
+    <string name="Help">Help</string>
+    <string name="About">About</string>
+    <string name="Error">Error</string>
+    <string name="Resume_or_clear">Resume or clear?</string>
+    <string name="about_p1">Thank you for visiting code(cyprus), a non-profit organization aiming at promoting coding skills within the Cyprus youth.</string>
+    <string name="about_p2">Learn all about it at:</string>
+    <string name="about_p3">This Android app serves as the client for the Treasure Hunt Challenge. The source code was kindly provided by aspectsense.com which also made it available as open source via an LGPL license at the following URL:</string>
+
+    <string name="Score_board">Score board</string>
+    <string name="Finished_at">Finished at: %1$s</string>
+
+</resources>
