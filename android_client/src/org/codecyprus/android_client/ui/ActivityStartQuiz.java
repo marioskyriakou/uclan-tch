@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.codecyprus.android_client.Installation;
 import org.codecyprus.android_client.Preferences;
 import org.codecyprus.android_client.R;
 import org.codecyprus.android_client.SerializableSession;
@@ -191,6 +192,7 @@ public class ActivityStartQuiz extends Activity
             parameters.put("email1", email1);
             parameters.put("name2", name2);
             parameters.put("email2", email2);
+            parameters.put("installationID", Installation.id(this));
             startQuizIntent.putExtra(SyncService.EXTRA_PARAMETERS, parameters);
             setProgressBarIndeterminateVisibility(true);
             startService(startQuizIntent);

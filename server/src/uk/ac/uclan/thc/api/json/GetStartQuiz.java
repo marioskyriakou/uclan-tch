@@ -85,6 +85,7 @@ public class GetStartQuiz extends HttpServlet
         final String email1 = request.getParameter("email1");
         final String name2 = request.getParameter("name2");
         final String email2 = request.getParameter("email2");
+        final String installationID = request.getParameter("installationID");
 
         if(playerName == null || playerName.isEmpty() || appID == null || appID.isEmpty() || categoryUUID == null || categoryUUID.isEmpty())
         {
@@ -123,7 +124,7 @@ public class GetStartQuiz extends HttpServlet
                         // first send an email
                         if(name1 != null && !name1.isEmpty()) sendEmail(category.getCreatedBy(), category.getName(),
                                                                         playerName, appID, categoryUUID, name1,
-                                                                        email1, name2, email2, request.getRemoteAddr());
+                                                                        email1, name2, email2, request.getRemoteAddr(), installationID);
 
                         // next prepare and send the reply
                         final StringBuilder reply = new StringBuilder("{").append(EOL);
@@ -140,26 +141,32 @@ public class GetStartQuiz extends HttpServlet
 
     private void sendEmail(final String categoryCreatedByEmail, final String categoryName,
                            final String teamName, final String appID, final String categoryUUID, final String name1,
-                           final String email1, final String name2, final String email2, final String senderIP)
+                           final String email1, final String name2, final String email2,
+                           final String senderIP, final String installationID)
     {
         final Session session = Session.getDefaultInstance(new Properties(), null);
         try
         {
             final Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(email1, name1, "utf-8"));
+            message.setFrom(new InternetAddress(categoryCreatedByEmail, name1, "utf-8"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(categoryCreatedByEmail, categoryName));
             message.setSubject("Treasure Hunt - " + appID + " from: " + email1);
             message.setText(
                     "Competition entry: "
-                            + "\nApp id: " + appID
-                            + "\nTeam name: " + teamName
-                            + "\nName1: " + name1
-                            + "\nEmail1: " + email1
-                            + "\nName2: " + name2
-                            + "\nEmail2: " + email2
-                            + "\nCategory UUID: " + categoryUUID
-                            + "\nSubmitted (UTC): " + new Date()
-                            + "\nSender IP: " + senderIP
+                            + "\n----------------------------------------"
+                            + "\n  Team name: " + teamName
+                            + "\n  Name1: " + name1
+                            + "\n  Email1: " + email1
+                            + "\n  Name2: " + name2
+                            + "\n  Email2: " + email2
+                            + "\n----------------------------------------"
+                            + "\n  App id: " + appID
+                            + "\n  Category UUID: " + categoryUUID
+                            + "\n----------------------------------------"
+                            + "\n  Submitted (UTC): " + new Date()
+                            + "\n  Installation ID: " + installationID
+                            + "\n  Sender IP: " + senderIP
+                            + "\n----------------------------------------"
             );
             Transport.send(message);
         }

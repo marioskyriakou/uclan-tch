@@ -59,6 +59,9 @@ public class SyncService extends IntentService
     public static final String ACTION_SCORE_BOARD = "ScoreBoard";
     public static final String ACTION_SCORE_BOARD_COMPLETED = "ScoreBoardCompleted";
 
+    public static final String ACTION_UPDATE_LOCATION = "UpdateLocation";
+    public static final String ACTION_UPDATE_LOCATION_COMPLETED = "UpdateLocationCompleted";
+
     public static final String EXTRA_PARAMETERS = "parameters";
     public static final String EXTRA_PAYLOAD = "payload";
 
@@ -70,6 +73,7 @@ public class SyncService extends IntentService
     public static final String SKIP_QUESTION_JSON_URL           = BASE_JSON_URL + "/skipQuestion";
     public static final String SCORE_JSON_URL                   = BASE_JSON_URL + "/score";
     public static final String SCORE_BOARD_JSON_URL             = BASE_JSON_URL + "/scoreBoard";
+    public static final String UPDATE_LOCATION_JSON_URL         = BASE_JSON_URL + "/updateLocation";
 
     public SyncService()
     {
@@ -129,6 +133,12 @@ public class SyncService extends IntentService
                 Log.d(TAG, "SyncService: " + ACTION_SCORE_BOARD);
                 reply = get(SCORE_BOARD_JSON_URL, parameters);
                 notify(ACTION_SCORE_BOARD_COMPLETED, reply);
+            }
+            else if(ACTION_UPDATE_LOCATION.equals(intent.getAction()))
+            {
+                Log.d(TAG, "SyncService: " + ACTION_UPDATE_LOCATION);
+                reply = get(UPDATE_LOCATION_JSON_URL, parameters);
+                notify(ACTION_UPDATE_LOCATION_COMPLETED, reply);
             }
         }
         catch (IOException ioe)

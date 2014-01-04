@@ -22,6 +22,9 @@ import static org.codecyprus.android_client.model.Answer.*;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.*;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -80,6 +83,10 @@ public class ActivityCurrentQuestion extends Activity
 
     private InputMethodManager inputMethodManager;
 
+    private LocationManager locationManager;
+
+    private LocationUpdater locationUpdater;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -88,7 +95,12 @@ public class ActivityCurrentQuestion extends Activity
         setContentView(R.layout.activity_current_question);
 
         actionBar = getActionBar();
+
         inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        locationUpdater = new LocationUpdater();
 
         scoreTextView = (TextView) findViewById(R.id.activity_current_question_score);
         feedbackTextView = (TextView) findViewById(R.id.activity_current_question_feedback);
@@ -241,6 +253,9 @@ public class ActivityCurrentQuestion extends Activity
             sessionUUID = serializableSession.getSessionUUID();
             requestCurrentQuestion();
         }
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, locationUpdater);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, locationUpdater);
     }
 
     @Override
@@ -248,7 +263,10 @@ public class ActivityCurrentQuestion extends Activity
     {
         super.onPause();
         unregisterReceiver(progressReceiver);
+
+        locationManager.removeUpdates(locationUpdater);
     }
+
 
     private void requestCurrentQuestion()
     {
@@ -368,6 +386,11 @@ public class ActivityCurrentQuestion extends Activity
                         final int score = JsonParser.parseScore(payload);
                         scoreTextView.setText(getString(R.string.Score_is, score));
                     }
+                    else if(SyncService.ACTION_UPDATE_LOCATION_COMPLETED.equals(intent.getAction()))
+                    {
+                        // no need to do anything really, except show an error if any (will be handled via the try-catch block)
+                        JsonParser.parseUpdateLocation(payload);
+                    }
 
                     // update the UI
                     updateUI();
@@ -418,5 +441,49 @@ public class ActivityCurrentQuestion extends Activity
         final Intent startActivityScoreBoardIntent = new Intent(this, ActivityScoreBoard.class);
         startActivityScoreBoardIntent.putExtra("session", sessionUUID);
         startActivity(startActivityScoreBoardIntent);
+    }
+
+    private void updateLocation(final double lat, final double lng)
+    {
+        final Intent updateLocationIntent = new Intent(ActivityCurrentQuestion.this, SyncService.class);
+        updateLocationIntent.setAction(SyncService.ACTION_UPDATE_LOCATION);
+        final HashMap<String,String> parameters = new HashMap<String, String>();
+        parameters.put("session", sessionUUID);
+        parameters.put("lat", Double.toString(lat));
+        parameters.put("lng", Double.toString(lng));
+        updateLocationIntent.putExtra(SyncService.EXTRA_PARAMETERS, parameters);
+        startService(updateLocationIntent);
+    }
+
+    private class LocationUpdater implements LocationListener
+    {
+        @Override
+        public void onLocationChanged(Location location)
+        {
+            final double lat = location.getLatitude();
+            final double lng = location.getLongitude();
+            Log.d(TAG, "location: " + lat + ", " + lng);
+
+            // call sync service to update location
+            updateLocation(lat, lng);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras)
+        {
+            Log.d(TAG, "onStatusChanged: " + provider + ", status: " + status);
+        }
+
+        @Override
+        public void onProviderEnabled(String provider)
+        {
+            Log.d(TAG, "onProviderEnabled: " + provider);
+        }
+
+        @Override
+        public void onProviderDisabled(String provider)
+        {
+            Log.d(TAG, "onProviderDisabled: " + provider);
+        }
     }
 }

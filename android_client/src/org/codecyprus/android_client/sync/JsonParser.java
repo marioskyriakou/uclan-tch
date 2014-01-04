@@ -180,4 +180,17 @@ public class JsonParser
 
         return scoreEntries;
     }
+
+    public static void parseUpdateLocation(final String json)
+            throws JSONException, JsonParseException
+    {
+        final JSONObject jo = new JSONObject(json);
+
+        final String status = jo.getString("status");
+        if(!"OK".equals(status))
+        {
+            final String message = jo.getString("message");
+            throw new JsonParseException(status, message);
+        }
+    }
 }
