@@ -68,6 +68,8 @@ public class AddOrEditQuestion extends HttpServlet
                 try { seqNumber = Integer.parseInt(seqNumberS); } catch (NumberFormatException nfe) { log.warning(nfe.getMessage()); }
                 final String text = request.getParameter(QuestionFactory.PROPERTY_TEXT).replaceAll("\"", "'").replaceAll(",", ";");
                 final String correctAnswer = request.getParameter(QuestionFactory.PROPERTY_CORRECT_ANSWER);
+                final int correctScore = Integer.parseInt(request.getParameter(QuestionFactory.PROPERTY_CORRECT_SCORE));
+                final int wrongScore = Integer.parseInt(request.getParameter(QuestionFactory.PROPERTY_WRONG_SCORE));
                 float latitude = 0f;
                 try { latitude = Float.parseFloat(request.getParameter(QuestionFactory.PROPERTY_LATITUDE)); } catch (NumberFormatException nfe) { log.warning(nfe.getMessage()); }
                 float longitude = 0f;
@@ -75,11 +77,11 @@ public class AddOrEditQuestion extends HttpServlet
 
                 if(uuid != null && !uuid.isEmpty()) // editing existing category
                 {
-                    QuestionFactory.editQuestion(uuid, categoryUuid, seqNumber, text, correctAnswer, latitude, longitude);
+                    QuestionFactory.editQuestion(uuid, categoryUuid, seqNumber, text, correctAnswer, correctScore, wrongScore, latitude, longitude);
                 }
                 else // adding a new category
                 {
-                    final Key key = QuestionFactory.addQuestion(categoryUuid, seqNumber, text, correctAnswer, latitude, longitude);
+                    final Key key = QuestionFactory.addQuestion(categoryUuid, seqNumber, text, correctAnswer, correctScore, wrongScore, latitude, longitude);
                     uuid = KeyFactory.keyToString(key);
                 }
 

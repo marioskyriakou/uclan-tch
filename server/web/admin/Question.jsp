@@ -5,6 +5,7 @@
 <%@ page import="uk.ac.uclan.thc.data.QuestionFactory" %>
 <%@ page import="uk.ac.uclan.thc.admin.DeleteEntity" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.util.logging.Logger" %>
 <%--
   ~ This file is part of UCLan-THC server.
   ~
@@ -38,6 +39,7 @@
 
 <%@ include file="Authenticate.jsp" %>
 
+
 <%
     if(userEntity == null)
     {
@@ -53,9 +55,14 @@
     }
     else
     {
+
         String key = request.getParameter("uuid");
         final Question question = QuestionFactory.getQuestion(key);
+        final Logger log = Logger.getLogger(QuestionFactory.class.getCanonicalName());
+        log.severe("question: " + question);
 %>
+
+<p>Got question: <%=question.toString()%></p>
         <p><a href="/admin/category?uuid=<%=question.getCategoryUUID()%>">Back to category <%=question.getCategoryUUID()%></a></p>
 
         <form action="/admin/edit-question" method="post" onsubmit="editQuestionButton.disabled = true; return true;">
@@ -71,6 +78,14 @@
                 <tr>
                     <th>CORRECT ANSWER</th>
                     <td><input type="text" name="<%= QuestionFactory.PROPERTY_CORRECT_ANSWER %>" value="<%=question.getCorrectAnswer()%>"/></td>
+                </tr>
+                <tr>
+                    <th>CORRECT SCORE</th>
+                    <td><input type="number" name="<%= QuestionFactory.PROPERTY_CORRECT_SCORE%>" value="<%=question.getCorrectScore()%>"/></td>
+                </tr>
+                <tr>
+                    <th>WRONG SCORE</th>
+                    <td><input type="number" name="<%= QuestionFactory.PROPERTY_WRONG_SCORE%>" value="<%=question.getWrongScore()%>"/></td>
                 </tr>
                 <tr>
                     <th>LATITUDE</th>

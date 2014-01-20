@@ -37,13 +37,18 @@ public class QuestionFactory
 
     public static final String KIND = "Question";
 
-    public static final String PROPERTY_UUID = "uuid";
-    public static final String PROPERTY_CATEGORY_UUID = "question_category_uuid";
-    public static final String PROPERTY_SEQ_NUMBER = "question_seq_number";
-    public static final String PROPERTY_TEXT = "question_text";
-    public static final String PROPERTY_CORRECT_ANSWER = "question_correct_answer";
-    public static final String PROPERTY_LATITUDE = "question_latitude";
-    public static final String PROPERTY_LONGITUDE = "question_longitude";
+    public static final String PROPERTY_UUID            = "uuid";
+    public static final String PROPERTY_CATEGORY_UUID   = "question_category_uuid";
+    public static final String PROPERTY_SEQ_NUMBER      = "question_seq_number";
+    public static final String PROPERTY_TEXT            = "question_text";
+    public static final String PROPERTY_CORRECT_ANSWER  = "question_correct_answer";
+    public static final String PROPERTY_CORRECT_SCORE   = "question_correct_score";
+    public static final String PROPERTY_WRONG_SCORE     = "question_wrong_score";
+    public static final String PROPERTY_LATITUDE        = "question_latitude";
+    public static final String PROPERTY_LONGITUDE       = "question_longitude";
+
+    public static final long DEFAULT_CORRECT_SCORE   = 10L;
+    public static final long DEFAULT_WRONG_SCORE     = 0L;
 
     static public Question getQuestion(final String keyAsString)
     {
@@ -102,6 +107,8 @@ public class QuestionFactory
             final int seqNumber,
             final String text,
             final String correctAnswer,
+            final int correctScore,
+            final int wrongScore,
             final double latitude,
             final double longitude)
     {
@@ -111,6 +118,8 @@ public class QuestionFactory
         categoryEntity.setProperty(PROPERTY_TEXT, text);
         categoryEntity.setProperty(PROPERTY_SEQ_NUMBER, seqNumber);
         categoryEntity.setProperty(PROPERTY_CORRECT_ANSWER, correctAnswer);
+        categoryEntity.setProperty(PROPERTY_CORRECT_SCORE, correctScore);
+        categoryEntity.setProperty(PROPERTY_WRONG_SCORE, wrongScore);
         categoryEntity.setProperty(PROPERTY_LATITUDE, latitude);
         categoryEntity.setProperty(PROPERTY_LONGITUDE, longitude);
 
@@ -123,6 +132,8 @@ public class QuestionFactory
             final int seqNumber,
             final String text,
             final String correctAnswer,
+            final int correctScore,
+            final int wrongScore,
             final double latitude,
             final double longitude)
     {
@@ -134,6 +145,8 @@ public class QuestionFactory
             questionEntity.setProperty(PROPERTY_SEQ_NUMBER, seqNumber);
             questionEntity.setProperty(PROPERTY_TEXT, text);
             questionEntity.setProperty(PROPERTY_CORRECT_ANSWER, correctAnswer);
+            questionEntity.setProperty(PROPERTY_CORRECT_SCORE, correctScore);
+            questionEntity.setProperty(PROPERTY_WRONG_SCORE, wrongScore);
             questionEntity.setProperty(PROPERTY_LATITUDE, latitude);
             questionEntity.setProperty(PROPERTY_LONGITUDE, longitude);
             datastoreService.put(questionEntity);
@@ -148,12 +161,16 @@ public class QuestionFactory
 
     static public Question getFromEntity(final Entity entity)
     {
+        long correctScore   = (Long) (entity.hasProperty(PROPERTY_CORRECT_SCORE) ? entity.getProperty(PROPERTY_CORRECT_SCORE) : DEFAULT_CORRECT_SCORE);
+        long wrongScore     = (Long) (entity.hasProperty(PROPERTY_WRONG_SCORE) ? entity.getProperty(PROPERTY_WRONG_SCORE) : DEFAULT_WRONG_SCORE);
         return new Question(
                 KeyFactory.keyToString(entity.getKey()),
                 (String) entity.getProperty(PROPERTY_CATEGORY_UUID),
                 (Long) entity.getProperty(PROPERTY_SEQ_NUMBER),
                 (String) entity.getProperty(PROPERTY_TEXT),
                 (String) entity.getProperty(PROPERTY_CORRECT_ANSWER),
+                correctScore,
+                wrongScore,
                 (Double) entity.getProperty(PROPERTY_LATITUDE),
                 (Double) entity.getProperty(PROPERTY_LONGITUDE));
     }

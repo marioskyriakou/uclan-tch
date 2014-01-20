@@ -26,32 +26,13 @@ import java.io.Serializable;
  */
 public class Question implements Serializable
 {
-//    public static final String QUESTION_TYPE_MCQ = "mcq";
-//    public static final String QUESTION_TYPE_TEXT = "text";
-//    public static final String QUESTION_TYPE_PICTURE = "picture";
-//
-//    public static enum QuestionType
-//    {
-//        MCQ(QUESTION_TYPE_MCQ), TEXT(QUESTION_TYPE_TEXT), PICTURE(QUESTION_TYPE_PICTURE);
-//
-//        private final String name;
-//
-//        QuestionType(final String name)
-//        {
-//            this.name = name;
-//        }
-//
-//        public String getName()
-//        {
-//            return name;
-//        }
-//    }
-
     private final String uuid;
     private final String categoryUUID;
     private final long seqNumber;
     private final String text;
     private final String correctAnswer;
+    private final long correctScore;
+    private final long wrongScore;
     private final double latitude;  // keep 0 if irrelevant
     private final double longitude; // keep 0 if irrelevant
 
@@ -60,6 +41,8 @@ public class Question implements Serializable
                     final long seqNumber,
                     final String text,
                     final String correctAnswer,
+                    final long correctScore,
+                    final long wrongScore,
                     final double latitude,
                     final double longitude)
     {
@@ -68,6 +51,8 @@ public class Question implements Serializable
         this.seqNumber = seqNumber;
         this.text = text;
         this.correctAnswer = correctAnswer;
+        this.correctScore = correctScore;
+        this.wrongScore = wrongScore;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -97,6 +82,10 @@ public class Question implements Serializable
         return correctAnswer;
     }
 
+    public long getCorrectScore() { return correctScore; }
+
+    public long getWrongScore() { return wrongScore; }
+
     public double getLatitude()
     {
         return latitude;
@@ -111,15 +100,6 @@ public class Question implements Serializable
     {
         return this.latitude != 0.0d && this.longitude != 0.0d;
     }
-
-//    public boolean isCorrectAnswer(final String answer, final double latitude, final double longitude)
-//    {
-//        if(answer == null) return false;
-//
-//        final boolean isLocationCorrect = isLocationRelevant() ? distanceTo(latitude, longitude) < DISTANCE_THRESHOLD : true;
-//
-//        return correctAnswer.equalsIgnoreCase(answer) && isLocationCorrect;
-//    }
 
     public boolean isCorrectLocation(final LocationFingerprint locationFingerprint)
     {

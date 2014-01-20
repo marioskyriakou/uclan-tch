@@ -121,6 +121,8 @@
                 <th>SEQ NUMBER</th>
                 <th>TEXT</th>
                 <th>CORRECT ANSWER</th>
+                <th>CORRECT SCORE</th>
+                <th>WRONG SCORE</th>
                 <th>LATITUDE</th>
                 <th>LONGITUDE</th>
                 <th></th>
@@ -135,6 +137,8 @@
                 <td><%= question.getSeqNumber() %></td>
                 <td><%= question.getText() %></td>
                 <td><%= question.getCorrectAnswer() %></td>
+                <td><%= question.getCorrectScore() %></td>
+                <td><%= question.getWrongScore() %></td>
                 <td><%= question.getLatitude() %></td>
                 <td><%= question.getLongitude() %></td>
                 <td>
@@ -171,6 +175,14 @@
                 <tr>
                     <th>CORRECT ANSWER</th>
                     <td><input type="text" name="<%= QuestionFactory.PROPERTY_CORRECT_ANSWER %>" /></td>
+                </tr>
+                <tr>
+                    <th>CORRECT SCORE</th>
+                    <td><input type="number" name="<%= QuestionFactory.PROPERTY_CORRECT_SCORE %>" /></td>
+                </tr>
+                <tr>
+                    <th>WRONG SCORE</th>
+                    <td><input type="number" name="<%= QuestionFactory.PROPERTY_WRONG_SCORE %>" /></td>
                 </tr>
                 <tr>
                     <th>LATITUDE</th>
