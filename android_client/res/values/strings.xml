@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">code(cyprus)</string>
-    <string name="version_name">0.1a</string>
-    <string name="build_date">(2013–12–29)</string>
+    <string name="app_name">Code Cyprus</string>
+    <string name="version_name">0.9b</string>
+    <string name="build_date">(2014–02–01)</string>
 
     <!--about dialog-->
     <string name="about_aspectsense">Developed by\nAspectSense.com © 2011–2014</string>
     <string name="Rate_us">Rate us</string>
     <string name="Dismiss">Dismiss</string>
-    <string name="AspectSense_icon">AspectSense icon</string>
+    <string name="AspectSense_icon">AspectSense</string>
 
     <!--resume or clear dialog-->
     <string name="Resume_or_clear_message">A stored session exists for treasure hunt: \'%1$s\'.\n\nWould you like to resume it, or start a new one?</string>
@@ -24,7 +24,7 @@
     <string name="codecyprus_dot_org_url">http://codecyprus.org</string>
     <string name="aspectsense_dot_com_url">http://aspectsense.com</string>
 
-    <string name="Ahoy">Ahoy pirates! And welcome to the code(cyprus).org Treasure Hunt!\n\nIf you have questions, select the \'Help\' menu. When you are ready, click the button below to get started!</string>    <string name="Start">Start</string>
+    <string name="Ahoy">Ahoy pirates! And welcome to the Code Cyprus\' Treasure Hunt!\n\nIf you have questions, select the \'Help\' menu. When you are ready, click the button below to get started!</string>    <string name="Start">Start</string>
     <string name="Lets_get_started">Let\'s get started!</string>
     <string name="Android_pirate">Android pirate</string>
     <string name="Select_a_category">Select a category</string>
@@ -69,13 +69,14 @@
     <string name="Correct">Correct!</string>
     <string name="Correct_finished">Correct, finished!</string>
 
+    <string name="Website">Website</string>
     <string name="Help">Help</string>
     <string name="About">About</string>
     <string name="Error">Error</string>
     <string name="Resume_or_clear">Resume or clear?</string>
-    <string name="about_p1">Thank you for visiting code(cyprus), a non-profit organization aiming at promoting coding skills within the Cyprus youth.</string>
+    <string name="about_p1">Thank you for visiting Code Cyprus, a non-profit project aiming at inspiring high school students to take interest in computer science, in Cyprus and beyond.</string>
     <string name="about_p2">Learn all about it at:</string>
-    <string name="about_p3">This Android app serves as the client for the Treasure Hunt Challenge. The source code was kindly provided by aspectsense.com which also made it available as open source via an LGPL license at the following URL:</string>
+    <string name="about_p3">This Android app serves as the client for the Treasure Hunt competition. The source code was kindly provided by aspectsense.com which also made it available as open source via an LGPL license at the following URL:</string>
 
     <string name="Score_board">Score board</string>
     <string name="Finished_at">Finished at: %1$s</string>

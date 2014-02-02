@@ -19,7 +19,10 @@ package org.codecyprus.android_client.ui;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import org.codecyprus.android_client.R;
@@ -44,15 +47,33 @@ public class ActivityHelp extends Activity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        menu.add(R.string.Website)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        switch (item.getItemId())
+        if(item.getItemId() == android.R.id.home)
         {
             // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                finish();
-                return true;
+            finish();
+            return true;
         }
-        return super.onOptionsItemSelected(item);
+        else if(getString(R.string.Website).equals(item.getTitle()))
+        {
+            final Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(getString(R.string.codecyprus_dot_org_url)));
+            startActivity(intent);
+            return true;
+        }
+        else
+        {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
