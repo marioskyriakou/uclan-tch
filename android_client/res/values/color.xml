@@ -21,8 +21,10 @@
     <color name="semitransparent_white">#7fffffff</color>
     <color name="dark_gray">#ff360111</color>
     <color name="pirate_red">#ffBC2515</color>
+    <color name="black">#ff000000</color>
     <color name="red">#ffaf0000</color>
     <color name="green">#ff00af00</color>
+    <color name="pirate_green">#ff9fbf3b</color>
     <color name="bright_white">#ffffffff</color>
 
 </resources>

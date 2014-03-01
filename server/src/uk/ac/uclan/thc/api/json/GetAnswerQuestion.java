@@ -15,23 +15,6 @@
  *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * This file is part of UCLan-THC server.
- *
- *     UCLan-THC server is free software: you can redistribute it and/or
- *     modify it under the terms of the GNU General Public License as
- *     published by the Free Software Foundation, either version 3 of
- *     the License, or (at your option) any later version.
- *
- *     UCLan-THC server is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package uk.ac.uclan.thc.api.json;
 
 import uk.ac.uclan.thc.api.Protocol;
@@ -96,6 +79,7 @@ public class GetAnswerQuestion extends HttpServlet
                 // first check if the answer is correct
                 if(!answer.equalsIgnoreCase(correctAnswer))
                 {
+                    SessionFactory.updateScoreAndKeepSessionToSameQuestion(sessionUUID, currentQuestion.getWrongScore());
                     feedback = "incorrect";
                 }
                 else // answer is correct
@@ -104,12 +88,13 @@ public class GetAnswerQuestion extends HttpServlet
                     final LocationFingerprint lastLocationFingerprint = LocationFingerprintFactory.getLastLocationFingerprintBySessionUUID(sessionUUID);
                     if(!currentQuestion.isCorrectLocation(lastLocationFingerprint))
                     {
+                        SessionFactory.updateScoreAndKeepSessionToSameQuestion(sessionUUID, currentQuestion.getWrongScore());
                         feedback = "unknown or incorrect location";
                     }
                     else
                     {
                         // correct answer and location. check if this was the last question or not
-                        final boolean hasMoreQuestions = SessionFactory.updateScoreAndProgressSessionToNextQuestion(sessionUUID);
+                        final boolean hasMoreQuestions = SessionFactory.updateScoreAndProgressSessionToNextQuestion(sessionUUID, currentQuestion.getCorrectScore());
                         if(hasMoreQuestions) // unfinished
                         {
                             feedback = "correct,unfinished";

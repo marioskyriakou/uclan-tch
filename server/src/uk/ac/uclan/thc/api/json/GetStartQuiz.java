@@ -115,7 +115,7 @@ public class GetStartQuiz extends HttpServlet
                     if(sessionUUID == null)
                     {
                         // report that the given playerName was already used
-                        printWriter.println(Protocol.getJsonStatus("Invalid playerName", "The specified playerName is already in use (try a different one)"));
+                        printWriter.println(Protocol.getJsonStatus("Invalid Team Name", "The specified Team Name is already in use (try a different one)"));
                     }
                     else
                     {

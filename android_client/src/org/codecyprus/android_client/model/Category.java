@@ -28,12 +28,14 @@ public class Category implements Serializable
 {
     private String uuid;
     private String name;
+    private String validFrom;
     private String validUntil;
 
-    public Category(final String uuid, final String name, final String validUntil)
+    public Category(final String uuid, final String name, final String validFrom, final String validUntil)
     {
         this.uuid = uuid;
         this.name = name;
+        this.validFrom = validFrom;
         this.validUntil = validUntil;
     }
 
@@ -45,6 +47,11 @@ public class Category implements Serializable
     public String getName()
     {
         return name;
+    }
+
+    public String getValidFrom()
+    {
+        return validFrom;
     }
 
     public String getValidUntil()

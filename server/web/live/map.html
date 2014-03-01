@@ -71,6 +71,40 @@
 
         var map = {};
 
+        function timeInText(duration)
+        {
+            var SECOND = 1000;
+            var MINUTE = 60 * SECOND;
+            var HOUR = 60 * MINUTE;
+            var DAY = 24 * HOUR;
+            var WEEK = 7 * DAY;
+
+            if(duration < SECOND)
+            {
+                return "just now";
+            }
+            else if(duration < 2 * MINUTE)
+            {
+                return Math.floor(duration / SECOND) + " seconds";
+            }
+            else if(duration < 2 * HOUR)
+            {
+                return Math.floor(duration / MINUTE) + " minutes";
+            }
+            else if(duration < 2 * DAY)
+            {
+                return Math.floor(duration / HOUR) + " hours";
+            }
+            else if(duration < 2 * WEEK)
+            {
+                return Math.floor(duration / DAY) + " days";
+            }
+            else
+            {
+                return Math.floor(duration / WEEK) + " weeks";
+            }
+        }
+
         function initialize() {
             var mapOptions = {
                 center: UCLan_Cyprus_position,
@@ -125,6 +159,23 @@
                             "<table style='border: 1px solid gray; font-size: 20px;'>" +
                             "<tr style='font-weight: bolder'><th style='width: 80px;'>Player</th><th style='width: 80px;'>App ID</th><th style='width: 80px;'>Score</th><th style='width: 80px;'>Finished</th></tr>"
                     var counter = 1;
+                    var categoryName = rootObject.categoryName;
+                    if(categoryName.length > 0) category_title.innerHTML = categoryName;
+                    var validFrom = rootObject.validFrom;
+                    var validUntil = rootObject.validUntil;
+                    var now = Date.now();
+                    if(now < validFrom)
+                    {
+                        time_and_date.innerHTML = "Going live in " + timeInText(validFrom-now);
+                    }
+                    else if(now < validUntil)
+                    {
+                        time_and_date.innerHTML = "Ending in " + timeInText(validUntil-now);
+                    }
+                    else // now >= validUntil
+                    {
+                        time_and_date.innerHTML = "Ended " + timeInText(now-validUntil) + " ago";
+                    }
                     for(var p in rootObject.scoreBoard) {
                         var finishTime = rootObject.scoreBoard[p].finishTime;
                         var fts;
@@ -185,6 +236,7 @@
         <img src="uclan_small.png" title="UCLan Cyprus" alt="UCLan Cyprus"/>
         <h1 style="font-family: sans-serif; color: #CE0E41; font-weight: bold; font-size: 28px;" id="category_title">Treasure Hunt Challenge</h1>
         <h1 style="font-family: sans-serif; font-weight: bolder; font-size: 20px;">Live score board</h1>
+        <h2 style="font-family: sans-serif; font-weight: bolder; font-size: 16px; color: #f00;" id="time_and_date"></h2>
         <div id="teams" style="padding: 10px;">
             <table align="center" style='border: 1px solid gray; font-size: 20px; padding: 10px'>
                 <tr style='font-weight: bolder'><th style='width: 80px;'>Player</th><th style='width: 80px;'>App ID</th><th style='width: 80px;'>Score</th><th style='width: 80px;'>Finished</th></tr>

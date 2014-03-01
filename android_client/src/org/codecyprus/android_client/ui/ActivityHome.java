@@ -28,10 +28,10 @@ public class ActivityHome extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        menu.add(R.string.Help)
+        menu.add(R.string.HELP)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
-        menu.add(R.string.About)
+        menu.add(R.string.ABOUT)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         return true;
@@ -40,12 +40,12 @@ public class ActivityHome extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if(getString(R.string.Help).equals(item.getTitle()))
+        if(getString(R.string.HELP).equals(item.getTitle()))
         {
             startActivity(new Intent(this, ActivityHelp.class));
             return true;
         }
-        else if(getString(R.string.About).equals(item.getTitle()))
+        else if(getString(R.string.ABOUT).equals(item.getTitle()))
         {
             new DialogAbout(this).show();
             return true;

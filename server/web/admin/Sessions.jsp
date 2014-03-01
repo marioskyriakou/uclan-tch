@@ -76,6 +76,7 @@ You are not admin!
         <th>CURRENT QUESTION UUID</th>
         <th>SCORE</th>
         <th>FINISH TIME</th>
+        <th/>
     </tr>
     <%
         for(final Session mySession : sessions)
@@ -102,6 +103,13 @@ You are not admin!
                 : hoursS + ":" + minutesS + ":" + secondsS + "." + millisecondsS;
     %>
         <td><%=finishTime%> (<%=finishTimeS%>)</td>
+        <td>
+            <form action="/admin/delete-entity">
+                <div><input type="submit" value="Delete" /></div>
+                <input type="hidden" name="<%= SessionFactory.PROPERTY_UUID %>" value="<%= mySession.getUUID() %>"/>
+                <input type="hidden" name="<%= DeleteEntity.REDIRECT_URL %>" value="<%= URLEncoder.encode("/admin/sessions?category_uuid=" + categoryUUID, "UTF-8") %>"/>
+            </form>
+        </td>
     </tr>
     <%
         }

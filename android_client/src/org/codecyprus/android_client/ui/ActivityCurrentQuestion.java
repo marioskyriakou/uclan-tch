@@ -71,7 +71,7 @@ public class ActivityCurrentQuestion extends Activity
     private Button buttonD;
     private Button buttonSubmit;
 
-    private TextView scoreTextView;
+//    private TextView scoreTextView;
     private TextView feedbackTextView;
     private TextView questionTextView;
     private TextView requiresLocationTextView;
@@ -102,7 +102,7 @@ public class ActivityCurrentQuestion extends Activity
 
         locationUpdater = new LocationUpdater();
 
-        scoreTextView = (TextView) findViewById(R.id.activity_current_question_score);
+//        scoreTextView = (TextView) findViewById(R.id.activity_current_question_score);
         feedbackTextView = (TextView) findViewById(R.id.activity_current_question_feedback);
         feedbackTextView.setVisibility(View.GONE);
         questionTextView = (TextView) findViewById(R.id.activity_current_question_question);
@@ -174,7 +174,7 @@ public class ActivityCurrentQuestion extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        menu.add(R.string.Skip)
+        menu.add(R.string.SKIP)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         menu.add(R.string.Score_board)
@@ -191,7 +191,7 @@ public class ActivityCurrentQuestion extends Activity
             finish();
             return true;
         }
-        else if(getString(R.string.Skip).equals(item.getTitle()))
+        else if(getString(R.string.SKIP).equals(item.getTitle()))
         {
             final DialogSkip dialogSkip = new DialogSkip(this);
             dialogSkip.setOnDismissListener(new DialogInterface.OnDismissListener()
@@ -336,12 +336,14 @@ public class ActivityCurrentQuestion extends Activity
                             feedbackTextView.setTextColor(getResources().getColor(R.color.red));
                             feedbackTextView.setText(getString(R.string.Incorrect));
                             Toast.makeText(context, R.string.Incorrect, Toast.LENGTH_SHORT).show();
+                            requestScore();
                         }
                         else if(answer == UNKNOWN_OR_INCORRECT_LOCATION)
                         {
                             feedbackTextView.setTextColor(getResources().getColor(R.color.red));
                             feedbackTextView.setText(getString(R.string.Unknown_or_incorrect_location));
                             Toast.makeText(context, R.string.Unknown_or_incorrect_location, Toast.LENGTH_SHORT).show();
+                            requestScore();
                         }
                         else if(answer == CORRECT_UNFINISHED)
                         {
@@ -384,7 +386,8 @@ public class ActivityCurrentQuestion extends Activity
                     else if(SyncService.ACTION_SCORE_COMPLETED.equals(intent.getAction()))
                     {
                         final int score = JsonParser.parseScore(payload);
-                        scoreTextView.setText(getString(R.string.Score_is, score));
+//                        scoreTextView.setText(getString(R.string.Score_is, score));
+                        setTitle(getString(R.string.Score, score));
                     }
                     else if(SyncService.ACTION_UPDATE_LOCATION_COMPLETED.equals(intent.getAction()))
                     {

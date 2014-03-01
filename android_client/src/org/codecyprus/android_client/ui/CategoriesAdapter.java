@@ -18,21 +18,32 @@
 package org.codecyprus.android_client.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import org.codecyprus.android_client.Preferences;
 import org.codecyprus.android_client.R;
 import org.codecyprus.android_client.SerializableSession;
 import org.codecyprus.android_client.model.Category;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Nearchos Paspallis on 24/12/13.
  */
 public class CategoriesAdapter extends ArrayAdapter<Category>
 {
+    public static final String TAG = "org.codecyprus.android_client.ui.CategoriesAdapter";
+
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    public static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("dd-MMM HH:mm");
+
     private final LayoutInflater layoutInflater;
 
     public CategoriesAdapter(final Context context, final Category [] categories)
@@ -53,12 +64,94 @@ public class CategoriesAdapter extends ArrayAdapter<Category>
         assert view != null;
         view.findViewById(R.id.list_item_category_active).setVisibility(serializableSession == null ? View.GONE : View.VISIBLE);
         final TextView categoryName = (TextView) view.findViewById(R.id.list_item_category_name);
-        final TextView categoryValidUntil = (TextView) view.findViewById(R.id.list_item_category_valid_until);
+        final TextView categoryValidDateAndTime = (TextView) view.findViewById(R.id.list_item_category_valid_date_and_time);
 
         // Bind the data efficiently with the holder.
         categoryName.setText(category.getName());
-        categoryValidUntil.setText(getContext().getString(R.string.Valid_until,category.getValidUntil()));
+
+        final long now = System.currentTimeMillis();
+        try
+        {
+            final Date validFrom = SIMPLE_DATE_FORMAT.parse(category.getValidFrom());
+            final Date validUntil = SIMPLE_DATE_FORMAT.parse(category.getValidUntil());
+            if(now < validFrom.getTime())
+            {
+                categoryValidDateAndTime.setText(getContext().getString(R.string.Going_live_in, timeInText(validFrom.getTime() - now)));
+                view.setAlpha(0.4f);
+            }
+            else if(validFrom.getTime() <= now && now < validUntil.getTime())
+            {
+                categoryValidDateAndTime.setText(getContext().getString(R.string.Ends_in, timeInText(validUntil.getTime() - now)));
+            }
+            else // assert now > validUntil.getTime()
+            {
+                categoryValidDateAndTime.setText(getContext().getString(R.string.Finished_ago, timeInText(now - validUntil.getTime())));
+                view.setAlpha(0.4f);
+            }
+        }
+        catch (ParseException pe)
+        {
+            Log.e(TAG, pe.getMessage());
+        }
 
         return view;
+    }
+
+    @Override
+    public boolean isEnabled(int position)
+    {
+        final Category category = getItem(position);
+        final long now = System.currentTimeMillis();
+
+        try
+        {
+            final Date validFrom = SIMPLE_DATE_FORMAT.parse(category.getValidFrom());
+            final Date validUntil = SIMPLE_DATE_FORMAT.parse(category.getValidUntil());
+            return validFrom.getTime() <= now && now <= validUntil.getTime();
+        }
+        catch (ParseException pe)
+        {
+            Log.e(TAG, pe.getMessage());
+            return true;
+        }
+    }
+
+    public static final long SECOND = 1000L;
+    public static final long MINUTE = 60L * SECOND;
+    public static final long HOUR = 60L * MINUTE;
+    public static final long DAY = 24L * HOUR;
+    public static final long WEEK = 7L * DAY;
+
+    private String timeInText(final long duration)
+    {
+        if(duration < SECOND)
+        {
+            return getContext().getString(R.string.just_now);
+        }
+        else if(duration < MINUTE)
+        {
+            final String dt = Long.toString(duration / SECOND);
+            return getContext().getString(R.string.seconds, dt);
+        }
+        else if(duration < HOUR)
+        {
+            final String dt = Long.toString(duration / MINUTE);
+            return getContext().getString(R.string.minutes, dt);
+        }
+        else if(duration < DAY)
+        {
+            final String dt = Long.toString(duration / HOUR);
+            return getContext().getString(R.string.hours, dt);
+        }
+        else if(duration < 2 * WEEK)
+        {
+            final String dt = Long.toString(duration / DAY);
+            return getContext().getString(R.string.days, dt);
+        }
+        else
+        {
+            final String dt = Long.toString(duration / WEEK);
+            return getContext().getString(R.string.weeks, dt);
+        }
     }
 }

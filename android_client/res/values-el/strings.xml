@@ -19,7 +19,7 @@
 <resources>
 
     <!--about dialog-->
-    <string name="about_aspectsense">Αναπτλυχθηκε από\nAspectSense.com © 2011–2014</string>
+    <string name="about_aspectsense">Αναπτύχθηκε από\nAspectSense.com © 2011–2014</string>
     <string name="Rate_us">Βαθμολογήστε μας</string>
     <string name="Dismiss">Κλείσιμο</string>
     <string name="AspectSense_icon">Εικονίδιο AspectSense</string>
@@ -32,9 +32,9 @@
 
     <!--skip dialog-->
     <string name="Skip_question">Παράληψη ερώτησης;</string>
-    <string name="Are_you_sure_you_want_to_skip_the_current_question">Είστε σίγουροι ότι θέλετε να παραλείψετε την ερώτηση;</string>
+    <string name="Are_you_sure_you_want_to_skip_the_current_question">Είστε σίγουροι ότι θέλετε να προσπεράσετε την ερώτηση;</string>
 
-    <string name="Ahoy">Αχόι πειρατές! Και καλωσορίσατε στο Κυνήγι Θησαυρού του Code Cyprus!\n\nΑν έχετε ερωτήσεις, Επιλέξτε το μενού \'Βοήθεια\'. Όταν είστε έτοιμοι, πατήστε το πιο κάτω κουμπί για να ξεκινήσετε!</string>
+    <string name="Ahoy">Αχόι πειρατές! Και καλωσορίσατε στο Κυνήγι Θησαυρού του Code Cyprus!\n\nΑν έχετε ερωτήσεις, επιλέξτε το μενού \'Βοήθεια\'. Όταν είστε έτοιμοι, πατήστε το πιο κάτω κουμπί για να ξεκινήσετε!</string>
     <string name="Start">Ξεκινήστε</string>
     <string name="Lets_get_started">Ας ξεκινήσουμε!</string>
     <string name="Android_pirate">Android πειρατής</string>
@@ -43,11 +43,22 @@
     <string name="Submit">Υποβολή</string>
 
     <string name="ACTIVE">ΕΝΕΡΓΟ</string>
+    <string name="ACTIVE_SESSION">ΑΠΟΘΗΚΕΥΜΕΝΟ</string>
 
-    <string name="Refresh">Ανανέωση</string>
-    <string name="Enter_code">Εισάγεται κωδικό</string>
+    <string name="REFRESH">ΑΝΑΝΕΩΣΗ</string>
+    <string name="ENTER_CODE">ΕΙΣΑΓΕΤΕ ΚΩΔΙΚΟ</string>
     <string name="First_select_a_treasure_hunt_to_join">Πρώτα επιλέξτε ένα θησαυρό για να κυνηγήσετε!</string>
     <string name="Valid_until">Έγκυρο μέχρι: %1$s</string>
+    <string name="Valid_from_until">Έγκυρο από: %1$s μέχρι: %2$s</string>
+    <string name="Going_live_in">Ξεκινά σέ: %1$s</string>
+    <string name="Ends_in">Τερματίζει σέ: %1$s</string>
+    <string name="just_now">τώρα</string>
+    <string name="seconds">%1$s δευτερόλεπτα</string>
+    <string name="minutes">%1$s λεπτά</string>
+    <string name="hours">%1$s ώρες</string>
+    <string name="days">%1$s μέρες</string>
+    <string name="weeks">%1$s εβδομάδες</string>
+    <string name="Finished_ago">Τερμάτισε πριν: %1$s</string>
 
     <string name="Find_the_Treasure">Βρείτε το θησαυρό!</string>
     <string name="Team_names_and_emails">Αχόι, ψάχνουμε για το θησαυρό \'%1$s\'. Απλά δώστε μας τα ονόματα και τα emails της ομάδας σας και φύγαμε!</string>
@@ -63,11 +74,13 @@
 
     <string name="Answer_here">Απαντήστε εδώ …</string>
     <string name="Score_is">Το σκορ είναι: %1$d </string>
+    <string name="Score">Σκορ: %1$d </string>
+    <string name="SKIP">ΠΡΟΣΠΕΡΑΣΤΕ</string>
     <string name="Skip">Προσπεράστε</string>
     <string name="Skipped_has_more_questions">Προσπεραστηκε, υπάρχουν άλλες ερωτήσεις…</string>
     <string name="Skipped_finished">Προσπεραστηκε, τέλευταία ερώτηση!</string>
     <string name="Loading">Φόρτωση …</string>
-    <string name="Requires_location">Απαιτείτε τοποθεσία!</string>
+    <string name="Requires_location">Απαιτείται τοποθεσία!</string>
     <string name="A">A</string>
     <string name="B">B</string>
     <string name="C">C</string>
@@ -80,15 +93,17 @@
     <string name="Correct_finished">Σωστό, τερμάτισες!</string>
 
     <string name="Website">Website</string>
+    <string name="HELP">ΒΟΗΘΕΙΑ</string>
     <string name="Help">Βοήθεια</string>
+    <string name="ABOUT">ΣΧΕΤΙΚΑ</string>
     <string name="About">Σχετικά</string>
     <string name="Error">Σφάλμα</string>
     <string name="Resume_or_clear">Επαναφορά ή καθαρισμός?</string>
-    <string name="about_p1">Thank you for visiting code(cyprus), a non-profit organization aiming at promoting coding skills within the Cyprus youth.</string>
+    <string name="about_p1">Ευχαριστούμε για τη συμμετοχή σας στο Code Cyprus, ένα μη κερδοσκοπικό γεγονός που στοχεύει στο να εμπνεύσει το ενδιαφέρον μαθητών γυμνασίων και λυκείων στον προγραμματισμό, στην Κύπρο και αλλού.</string>
     <string name="about_p2">Μάθετε περισσότερες πληροφορίες στο:</string>
     <string name="about_p3">Αυτή η εφαρμογή Android χρησιμοποιείται για το Κυνήγι Θησαυρού. Ο κώδικας αναπτύχθηκε από την aspectsense.com που τον έχει διαθέσει επίσης σαν ανοικτό κώδικα με άδεια LGPL στο ακόλουθο URL:</string>
 
     <string name="Score_board">Πίνακας βαθμολογίας</string>
-    <string name="Finished_at">Τερματίσατε σε: %1$s</string>
+    <string name="Finished_at">Τερματίσατε: %1$s</string>
 
 </resources>

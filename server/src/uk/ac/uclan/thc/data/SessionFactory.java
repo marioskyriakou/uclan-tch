@@ -38,6 +38,7 @@ public class SessionFactory
 
     public static final String KIND = "Session";
 
+    public static final String PROPERTY_UUID = "uuid";
     public static final String PROPERTY_PLAYER_NAME = "player_name";
     public static final String PROPERTY_APP_ID = "app_id";
     public static final String PROPERTY_CATEGORY_UUID = "category_uuid";
@@ -188,6 +189,8 @@ public class SessionFactory
         return sessions;
     }
 
+    public static final long DEFAULT_CORRECT_SCORE = 10L;
+
     /**
      * Updates the specified session by progressing to the next question.
      *
@@ -196,8 +199,20 @@ public class SessionFactory
      */
     static public boolean updateScoreAndProgressSessionToNextQuestion(final String sessionUUID)
     {
+        return updateScoreAndProgressSessionToNextQuestion(sessionUUID, DEFAULT_CORRECT_SCORE);
+    }
+
+    /**
+     * Updates the specified session by progressing to the next question.
+     *
+     * @param sessionUUID the ID of the session to be progressed
+     * @param correctScore the score increment to be applied
+     * @return true of there is indeed a next question, false otherwise (i.e. if that was the last question)
+     */
+    static public boolean updateScoreAndProgressSessionToNextQuestion(final String sessionUUID, final long correctScore)
+    {
         final Session session = getSession(sessionUUID);
-        final long newScore = session.getScore() + 10L;
+        final long newScore = session.getScore() + correctScore;
 
         final String currentQuestionUUID = session.getCurrentQuestionUUID();
         if("".equals(currentQuestionUUID)) // already finished the questions sequence in this session
@@ -236,6 +251,23 @@ public class SessionFactory
             log.severe("Error while progressing session with UUID: " + sessionUUID + " to the next question (currentQuestionUUID: " + currentQuestionUUID + ")");
             return false;
         }
+    }
+
+    public static final long DEFAULT_WRONG_SCORE = -3L;
+
+    /**
+     * Updates the specified session by staying at the same question while decreasing the score.
+     *
+     * @param sessionUUID the ID of the session to be progressed
+     * @param wrongScore the score increment to be applied (must be negative)
+     */
+    static public void updateScoreAndKeepSessionToSameQuestion(final String sessionUUID, final long wrongScore)
+    {
+        final Session session = getSession(sessionUUID);
+        final long newScore = session.getScore() + wrongScore;
+
+        MemcacheServiceFactory.getMemcacheService().delete(sessionUUID); // invalidate cache entry
+        updateSessionWithScore(sessionUUID, newScore);
     }
 
     /**
@@ -301,6 +333,26 @@ public class SessionFactory
             sessionEntity.setProperty(PROPERTY_CURRENT_QUESTION_UUID, nextQuestionUUID);
             sessionEntity.setProperty(PROPERTY_SCORE, score);
             sessionEntity.setProperty(PROPERTY_FINISH_TIME, finishTime);
+
+            datastoreService.put(sessionEntity);
+        }
+        catch (EntityNotFoundException enfe)
+        {
+            log.severe("Could not find " + KIND + " with key: " + sessionUUID);
+        }
+        catch (IllegalArgumentException iae)
+        {
+            log.warning("Invalid argument " + iae.getMessage());
+        }
+    }
+
+    static private void updateSessionWithScore(final String sessionUUID, final long score)
+    {
+        final DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+        try
+        {
+            final Entity sessionEntity = datastoreService.get(KeyFactory.stringToKey(sessionUUID));
+            sessionEntity.setProperty(PROPERTY_SCORE, score);
 
             datastoreService.put(sessionEntity);
         }

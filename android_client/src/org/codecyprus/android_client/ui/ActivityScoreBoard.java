@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.TextView;
 import org.codecyprus.android_client.R;
 import org.codecyprus.android_client.model.ScoreEntry;
 import org.codecyprus.android_client.sync.JsonParseException;
@@ -48,6 +49,7 @@ public class ActivityScoreBoard extends Activity
     private final IntentFilter intentFilter = new IntentFilter(SyncService.ACTION_SCORE_BOARD_COMPLETED);
     private ProgressReceiver progressReceiver;
 
+    private TextView scoreBoardTitle;
     private ListView listView;
 
     public void onCreate(Bundle savedInstanceState)
@@ -56,6 +58,7 @@ public class ActivityScoreBoard extends Activity
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_score_board);
 
+        scoreBoardTitle = (TextView) findViewById(R.id.activity_score_board_title);
         listView = (ListView) findViewById(R.id.activity_score_board_list_view);
 
         final ActionBar actionBar = getActionBar();

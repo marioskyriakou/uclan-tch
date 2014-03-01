@@ -18,8 +18,10 @@
 package uk.ac.uclan.thc.api.json;
 
 import uk.ac.uclan.thc.api.Protocol;
+import uk.ac.uclan.thc.data.CategoryFactory;
 import uk.ac.uclan.thc.data.LocationFingerprintFactory;
 import uk.ac.uclan.thc.data.SessionFactory;
+import uk.ac.uclan.thc.model.Category;
 import uk.ac.uclan.thc.model.LocationFingerprint;
 import uk.ac.uclan.thc.model.Session;
 
@@ -61,10 +63,14 @@ public class GetScoreBoardWithLocations extends HttpServlet
         else
         {
             final Vector<Session> sessions = SessionFactory.getSessionsByCategoryUUID(categoryUUID, MAX_NUM_OF_SESSIONS, sorted);
+            final Category category = CategoryFactory.getCategory(categoryUUID);
 
             final StringBuilder reply = new StringBuilder("{").append(EOL);
             reply.append("  \"status\": \"OK\"").append(",").append(EOL); // OK status
             reply.append("  \"message\": \"\"").append(",").append(EOL); // OK status
+            reply.append("  \"categoryName\": \"").append(category.getName()).append("\",").append(EOL); // OK status
+            reply.append("  \"validFrom\": ").append(category.getValidFrom()).append(",").append(EOL); // OK status
+            reply.append("  \"validUntil\": ").append(category.getValidUntil()).append(",").append(EOL); // OK status
             reply.append("  \"scoreBoard\": [").append(EOL); // OK status
             for(int i = 0; i < sessions.size(); i++)
             {

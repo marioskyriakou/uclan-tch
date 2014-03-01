@@ -199,7 +199,7 @@
         <Button
                 android:id="@+id/activity_start_quiz_button_start"
                 android:text="@string/Find_the_Treasure"
-                android:drawableRight="@drawable/play"
+                android:drawableRight="@drawable/ic_media_embed_play"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_start_height"/>

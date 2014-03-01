@@ -82,7 +82,7 @@ public class GetCategories extends HttpServlet
             {
                 if(usingCode || category.isActiveNow()) // if using code, then show also inactive, otherwise show only active
                 {
-                    selectedCategories.add("{ \"uuid\": \"" + category.getUUID() + "\", \"name\": \"" + category.getName() + "\", \"validUntil\": \"" + category.getValidUntilAsString() + "\" }");
+                    selectedCategories.add("{ \"uuid\": \"" + category.getUUID() + "\", \"name\": \"" + category.getName() + "\", \"validFrom\": \"" + category.getValidFromAsString() + "\", \"validUntil\": \"" + category.getValidUntilAsString() + "\" }");
                 }
             }
 

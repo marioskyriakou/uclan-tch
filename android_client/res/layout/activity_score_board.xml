@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"/>
 
         <TextView
+                android:id="@+id/activity_score_board_title"
                 android:text="@string/Score_board"
                 android:textSize="@dimen/text_size"
                 android:background="@drawable/popup_inline"

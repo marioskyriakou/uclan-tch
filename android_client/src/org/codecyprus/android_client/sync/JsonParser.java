@@ -54,8 +54,9 @@ public class JsonParser
             final JSONObject categoryObject = jsonArray.getJSONObject(i);
             final String uuid = categoryObject.getString("uuid");
             final String name = categoryObject.getString("name");
+            final String validFrom = categoryObject.getString("validFrom");
             final String validUntil = categoryObject.getString("validUntil");
-            categories[i] = new Category(uuid, name, validUntil);
+            categories[i] = new Category(uuid, name, validFrom, validUntil);
         }
 
         return categories;

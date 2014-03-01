@@ -77,6 +77,7 @@ You are not admin!
         <th></th>
         <th></th>
         <th></th>
+        <th></th>
     </tr>
     <%
         if(categories != null)
@@ -95,13 +96,14 @@ You are not admin!
         <td><%= category.getCode() %></td>
         <td><%= category.isActiveNow() %></td>
         <td>
-            <%--<form action="/admin/sessions">--%>
                 <div>
-                    <%--<input type="button" value="Sessions"/>--%>
                     <input type="button" value="Sessions" onclick="window.open('/admin/sessions?<%=SessionFactory.PROPERTY_CATEGORY_UUID%>=<%=category.getUUID()%>')" />
                 </div>
-                <%--<input type="hidden" name="<%= SessionFactory.PROPERTY_CATEGORY_UUID%>" value="<%= category.getUUID() %>"/>--%>
-            <%--</form>--%>
+        </td>
+        <td>
+                <div>
+                    <input type="button" value="Live map" onclick="window.open('/live/map.html?<%=CategoryFactory.PROPERTY_UUID%>=<%=category.getUUID()%>')" />
+                </div>
         </td>
         <td>
             <form action="/admin/category">

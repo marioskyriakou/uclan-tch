@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">Code Cyprus</string>
-    <string name="version_name">0.9b</string>
-    <string name="build_date">(2014–02–01)</string>
+    <string name="version_name">1.0</string>
+    <string name="build_date">(2014–03–01)</string>
 
     <!--about dialog-->
     <string name="about_aspectsense">Developed by\nAspectSense.com © 2011–2014</string>
@@ -32,11 +32,23 @@
     <string name="Submit">Submit</string>
 
     <string name="ACTIVE">ACTIVE</string>
+    <string name="ACTIVE_SESSION">ACTIVE SESSION</string>
 
+    <string name="REFRESH">REFRESH</string>
     <string name="Refresh">Refresh</string>
     <string name="Enter_code">Enter code</string>
     <string name="First_select_a_treasure_hunt_to_join">First select a treasure to hunt!</string>
     <string name="Valid_until">Valid until: %1$s</string>
+    <string name="Valid_from_until">Valid from: %1$s until: %2$s</string>
+    <string name="Going_live_in">Going live in: %1$s</string>
+    <string name="Ends_in">Ends in: %1$s</string>
+    <string name="just_now">just_now</string>
+    <string name="seconds">%1$s seconds</string>
+    <string name="minutes">%1$s minutes</string>
+    <string name="hours">%1$s hours</string>
+    <string name="days">%1$s days</string>
+    <string name="weeks">%1$s weeks</string>
+    <string name="Finished_ago">Finished: %1$s ago</string>
 
     <string name="Find_the_Treasure">Find the Treasure!</string>
     <string name="Team_names_and_emails">Ahoy, we are looking for the \'%1$s\' treasure. Now tell us you team\'s names and emails and we are ready to go!</string>
@@ -53,6 +65,8 @@
 
     <string name="Answer_here">Answer here …</string>
     <string name="Score_is">Score is: %1$d </string>
+    <string name="Score">Score: %1$d </string>
+    <string name="SKIP">SKIP</string>
     <string name="Skip">Skip</string>
     <string name="Skipped_has_more_questions">Skipped, has more questions…</string>
     <string name="Skipped_finished">Skipped, finished!</string>
@@ -70,7 +84,9 @@
     <string name="Correct_finished">Correct, finished!</string>
 
     <string name="Website">Website</string>
+    <string name="HELP">HELP</string>
     <string name="Help">Help</string>
+    <string name="ABOUT">ABOUT</string>
     <string name="About">About</string>
     <string name="Error">Error</string>
     <string name="Resume_or_clear">Resume or clear?</string>

@@ -25,7 +25,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.Toast;
 import org.codecyprus.android_client.R;
+
+import java.util.Locale;
 
 /**
  * Created by Nearchos Paspallis on 19/12/13.
@@ -43,7 +46,15 @@ public class ActivityHelp extends Activity
 
         final WebView webView = (WebView) findViewById(R.id.activity_about_webview);
         webView.setBackgroundColor(0x00000000);
-        webView.loadUrl("file:///android_asset/about.html");
+
+        if("ell".equals(Locale.getDefault().getISO3Language()))
+        {
+            webView.loadUrl("file:///android_asset/about_el.html");
+        }
+        else
+        {
+            webView.loadUrl("file:///android_asset/about_en.html");
+        }
     }
 
     @Override

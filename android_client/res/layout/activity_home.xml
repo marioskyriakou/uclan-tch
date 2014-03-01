@@ -9,7 +9,8 @@
     <Button
             android:id="@+id/activity_home_button_start"
             android:text="@string/Lets_get_started"
-            android:drawableRight="@drawable/play"
+            android:textStyle="bold"
+            android:drawableRight="@drawable/ic_media_embed_play"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_start_height"/>

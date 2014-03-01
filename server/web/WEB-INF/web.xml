@@ -274,6 +274,20 @@
     </servlet-mapping>
     <!--end of Admin-->
 
+    <!-- Indoor locations - Fingerprinting -->
+
+    <servlet>
+        <servlet-name>SubmitTraining</servlet-name>
+        <servlet-class>uk.ac.uclan.thc.api.fingerprinting.SubmitTraining</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SubmitTraining</servlet-name>
+        <url-pattern>/api/fingerprinting/submit_training</url-pattern>
+    </servlet-mapping>
+
+    <!-- end of Indoor locations - Fingerprinting -->
+
     <!--Guide-->
     <servlet>
         <servlet-name>GuideIndex</servlet-name>

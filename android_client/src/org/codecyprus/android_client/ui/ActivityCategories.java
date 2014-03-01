@@ -105,11 +105,11 @@ public class ActivityCategories extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        menu.add(R.string.Refresh)
+        menu.add(R.string.REFRESH)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
-        menu.add(R.string.Enter_code)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+//        menu.add(R.string.ENTER_CODE)
+//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         return true;
     }
@@ -122,12 +122,12 @@ public class ActivityCategories extends Activity
             finish();
             return true;
         }
-        else if(getString(R.string.Refresh).equals(item.getTitle()))
+        else if(getString(R.string.REFRESH).equals(item.getTitle()))
         {
             refresh();
             return true;
         }
-        else if(getString(R.string.Enter_code).equals(item.getTitle()))
+        else if(getString(R.string.ENTER_CODE).equals(item.getTitle()))
         {
             Toast.makeText(this, R.string.Enter_code, Toast.LENGTH_SHORT).show(); //todo
             return true;
