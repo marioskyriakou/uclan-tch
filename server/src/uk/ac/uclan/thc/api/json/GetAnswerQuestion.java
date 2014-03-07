@@ -69,7 +69,7 @@ public class GetAnswerQuestion extends HttpServlet
             {
                 final String currentQuestionUUID = session.getCurrentQuestionUUID();
                 final Question currentQuestion = QuestionFactory.getQuestion(currentQuestionUUID);
-                final String correctAnswer = currentQuestion.getCorrectAnswer();
+                final String correctAnswer = currentQuestion.getCorrectAnswer().trim();
 
                 final StringBuilder reply = new StringBuilder("{").append(EOL);
                 reply.append("  \"status\": \"OK\"").append(",").append(EOL); // OK status

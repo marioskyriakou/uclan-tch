@@ -153,7 +153,6 @@ public class SyncService extends IntentService
             throws IOException
     {
         final String url = getUrlWithParameters(baseUrl, parameters);
-Log.d(TAG, "GET: " + url);//todo
 
         // send get
         final HttpGet httpGet = new HttpGet(url);
@@ -172,7 +171,6 @@ Log.d(TAG, "GET: " + url);//todo
         }
 
         inputStream.close();
-Log.d(TAG, "GOT: " + stringBuilder.toString());//todo
         return stringBuilder.toString();
     }
 

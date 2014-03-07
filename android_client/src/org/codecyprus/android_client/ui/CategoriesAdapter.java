@@ -33,6 +33,7 @@ import org.codecyprus.android_client.model.Category;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Nearchos Paspallis on 24/12/13.
@@ -42,7 +43,11 @@ public class CategoriesAdapter extends ArrayAdapter<Category>
     public static final String TAG = "org.codecyprus.android_client.ui.CategoriesAdapter";
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-    public static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("dd-MMM HH:mm");
+    static
+    {
+        SIMPLE_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
+//    public static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("dd-MMM HH:mm");
 
     private final LayoutInflater layoutInflater;
 

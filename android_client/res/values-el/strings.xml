@@ -104,6 +104,7 @@
     <string name="about_p3">Αυτή η εφαρμογή Android χρησιμοποιείται για το Κυνήγι Θησαυρού. Ο κώδικας αναπτύχθηκε από την aspectsense.com που τον έχει διαθέσει επίσης σαν ανοικτό κώδικα με άδεια LGPL στο ακόλουθο URL:</string>
 
     <string name="Score_board">Πίνακας βαθμολογίας</string>
-    <string name="Finished_at">Τερματίσατε: %1$s</string>
+    <string name="Finished_in">Τερματίσατε σε: %1$s</string>
+    <string name="Not_finished_yet">Ακόμη να τερματίσει</string>
 
 </resources>

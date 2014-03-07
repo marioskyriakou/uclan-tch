@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">Code Cyprus</string>
-    <string name="version_name">1.0</string>
-    <string name="build_date">(2014–03–01)</string>
+    <string name="version_name">1.0.1</string>
+    <string name="build_date">(2014–03–07)</string>
 
     <!--about dialog-->
     <string name="about_aspectsense">Developed by\nAspectSense.com © 2011–2014</string>
@@ -95,6 +95,7 @@
     <string name="about_p3">This Android app serves as the client for the Treasure Hunt competition. The source code was kindly provided by aspectsense.com which also made it available as open source via an LGPL license at the following URL:</string>
 
     <string name="Score_board">Score board</string>
-    <string name="Finished_at">Finished at: %1$s</string>
+    <string name="Finished_in">Finished in: %1$s</string>
+    <string name="Not_finished_yet">Not finished yet</string>
 
 </resources>

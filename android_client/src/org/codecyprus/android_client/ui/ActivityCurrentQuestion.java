@@ -306,7 +306,7 @@ public class ActivityCurrentQuestion extends Activity
         answerQuestionIntent.setAction(SyncService.ACTION_ANSWER_QUESTION);
         final HashMap<String,String> parameters = new HashMap<String, String>();
         parameters.put("session", sessionUUID);
-        parameters.put("answer", answer);
+        parameters.put("answer", answer.trim());
         answerQuestionIntent.putExtra(SyncService.EXTRA_PARAMETERS, parameters);
         setProgressBarIndeterminateVisibility(true);
         startService(answerQuestionIntent);
